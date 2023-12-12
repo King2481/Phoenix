@@ -40,13 +40,17 @@ void UAbilityTask_FaceTarget::TickTask(float DeltaTime)
 	Super::TickTask(DeltaTime);
 
 	const FVector DirectionToTarget = (TargetActor->GetActorLocation() - GetAvatarActor()->GetActorLocation()).GetSafeNormal();
-	const FRotator CurrentRotation = GetAvatarActor()->GetActorRotation();
-	const FRotator DesiredRotation = CurrentRotation.Quaternion().RotateVector(DirectionToTarget).Rotation();
-	const FRotator InterpedRotation = FMath::RInterpTo(CurrentRotation, DesiredRotation, DeltaTime, RotationSpeed);
+	const FVector HorizontalDirection = FVector(DirectionToTarget.X, DirectionToTarget.Y, 0.0f);
+	const float TargetYaw = FMath::Atan2(HorizontalDirection.Y, HorizontalDirection.X) * 180.0f / PI;
+	const float CurrentYaw = GetAvatarActor()->GetActorRotation().Yaw;
 
-	GetAvatarActor()->SetActorRotation(InterpedRotation);
+	const float InterpedYaw = FMath::FInterpTo(CurrentYaw, TargetYaw, DeltaTime, RotationSpeed);
 
-	if (FVector::DotProduct(GetAvatarActor()->GetActorForwardVector(), DirectionToTarget) >= 0.9999f)
+	FRotator NewRotation = GetAvatarActor()->GetActorRotation();
+	NewRotation.Yaw = InterpedYaw;
+	GetAvatarActor()->SetActorRotation(NewRotation);
+
+	if (FMath::IsNearlyEqual(InterpedYaw, TargetYaw, 1.0f))
 	{
 		OnRequestFinished.Broadcast();
 		EndTask();
