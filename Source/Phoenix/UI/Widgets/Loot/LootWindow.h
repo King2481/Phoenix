@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CommonActivatableWidget.h"
+#include "Phoenix/UI/Widgets/PhoenixCommonActivatableWidget.h"
 #include "LootWindow.generated.h"
 
 struct FLootInfo;
@@ -15,7 +15,7 @@ class ULootDisplayPanel;
  * 
  */
 UCLASS(BlueprintType)
-class PHOENIX_API ULootWindow : public UCommonActivatableWidget
+class PHOENIX_API ULootWindow : public UPhoenixCommonActivatableWidget
 {
 	GENERATED_BODY()
 

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CommonActivatableWidget.h"
+#include "Phoenix/UI/Widgets/PhoenixCommonActivatableWidget.h"
 #include "Phoenix/Player/PhoenixPlayerController.h" // TODO: For FPlayerInteractionsInfo struct, move struct out when possible.
 #include "InteractionListWidget.generated.h"
 
@@ -13,7 +13,7 @@ class UListView;
  * 
  */
 UCLASS()
-class PHOENIX_API UInteractionListWidget : public UCommonActivatableWidget
+class PHOENIX_API UInteractionListWidget : public UPhoenixCommonActivatableWidget
 {
 	GENERATED_BODY()
 
