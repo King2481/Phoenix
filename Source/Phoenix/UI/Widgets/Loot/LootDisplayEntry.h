@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "Phoenix/UI/Widgets/ToolTipWidget.h"
 #include "Blueprint/IUserObjectListEntry.h" // IUserObjectListEntry
 #include "LootDisplayEntry.generated.h"
 
@@ -13,7 +13,7 @@ class UTextBlock;
  * 
  */
 UCLASS()
-class PHOENIX_API ULootDisplayEntry : public UUserWidget, public IUserObjectListEntry
+class PHOENIX_API ULootDisplayEntry : public UToolTipWidget, public IUserObjectListEntry
 {
 	GENERATED_BODY()
 
