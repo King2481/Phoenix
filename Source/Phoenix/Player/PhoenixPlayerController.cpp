@@ -80,7 +80,7 @@ void APhoenixPlayerController::UpdateInputMode(const EInputMode NewInputMode)
 			break;
 
 		case EInputMode::GameAndUI:
-			SetInputMode(FInputModeGameAndUI());
+			SetInputMode(FInputModeGameAndUI().SetHideCursorDuringCapture(false));
 			break;
 
 		case EInputMode::Game:
