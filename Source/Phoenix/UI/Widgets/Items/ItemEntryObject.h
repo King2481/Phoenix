@@ -5,21 +5,21 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Phoenix/Items/InventoryTypes.h" //FInventoryItem 
-#include "LootEntryObject.generated.h"
+#include "ItemEntryObject.generated.h"
 
 /**
  * 
  */
-UCLASS()
-class PHOENIX_API ULootEntryObject : public UObject
+UCLASS(BlueprintType)
+class PHOENIX_API UItemEntryObject : public UObject
 {
 	GENERATED_BODY()
 
 public:
 
-	ULootEntryObject();
+	UItemEntryObject();
 
-	UPROPERTY(BlueprintReadOnly, Category = "Loot Entry Object")
+	UPROPERTY(BlueprintReadOnly, Category = "Item Entry Object")
 	FInventoryItem StoredItem;
 	
 };

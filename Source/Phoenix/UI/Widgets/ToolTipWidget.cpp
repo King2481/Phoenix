@@ -11,8 +11,6 @@ UToolTipWidget::UToolTipWidget(const FObjectInitializer& ObjectInitializer)
 
 void UToolTipWidget::NativeConstruct()
 {
-	Super::NativeConstruct();
-
 	if (ToolTipClassToUse != nullptr)
 	{
 		if (const auto InstancedToolTip = CreateWidget<UUserWidget>(this, ToolTipClassToUse))
@@ -20,4 +18,6 @@ void UToolTipWidget::NativeConstruct()
 			SetToolTip(InstancedToolTip);
 		}
 	}
+
+	Super::NativeConstruct();
 }

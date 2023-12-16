@@ -3,19 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Phoenix/UI/Widgets/PhoenixCommonActivatableWidget.h"
+#include "Phoenix/UI/Widgets/Windows/DragableWindow.h"
 #include "LootWindow.generated.h"
 
 struct FLootInfo;
 struct FInventoryItem;
 class UItemDataBase;
-class ULootDisplayPanel;
+class UItemDisplayPanel;
+class UInvetoryComponent;
+class UButton;
 
 /**
  * 
  */
 UCLASS(BlueprintType)
-class PHOENIX_API ULootWindow : public UPhoenixCommonActivatableWidget
+class PHOENIX_API ULootWindow : public UDragableWindow
 {
 	GENERATED_BODY()
 
@@ -42,7 +44,16 @@ protected:
 
 	UFUNCTION()
 	void DisplayWindowAtLocation(const FLootInfo& NewInfo);
+
+	UFUNCTION()
+	void OnTakeAllClicked();
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Loot Window", meta = (BindWidget))
-	TObjectPtr<ULootDisplayPanel> DisplayPanel;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Loot Window", meta = (BindWidget))
+	TObjectPtr<UItemDisplayPanel> DisplayPanel;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Loot Window", meta = (BindWidget))
+	TObjectPtr<UButton> TakeAllButton;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Loot Window")
+	TObjectPtr<UInventoryComponent> LootingInventory;
 };

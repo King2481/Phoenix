@@ -2,10 +2,13 @@
 
 
 #include "Phoenix/UI/Widgets/Loot/LootWindow.h"
-#include "Phoenix/UI/Widgets/Loot/LootDisplayPanel.h"
+#include "Phoenix/UI/Widgets/Items/ItemDisplayPanel.h"
+#include "Phoenix/UI/Widgets/Items/ItemDisplayEntry.h"
 #include "Phoenix/Player/PhoenixPlayerController.h"
+#include "Phoenix/Items/InventoryComponent.h"
 
 #include "Input/CommonUIInputTypes.h"
+#include "Components/Button.h"
 #include "Components/CanvasPanelSlot.h"
 
 ULootWindow::ULootWindow(const FObjectInitializer& ObjectInitializer)
@@ -13,6 +16,10 @@ ULootWindow::ULootWindow(const FObjectInitializer& ObjectInitializer)
 	bSetVisibilityOnActivated = true;
 	bSetVisibilityOnDeactivated = true;
 	SetBindVisibilities(ESlateVisibility::SelfHitTestInvisible, ESlateVisibility::Collapsed, false);
+
+	DisplayPanel = nullptr;
+	TakeAllButton = nullptr;
+	LootingInventory = nullptr;
 }
 
 void ULootWindow::NativeOnInitialized()
@@ -30,6 +37,11 @@ void ULootWindow::NativeConstruct()
 	{
 		PC->OnDisplayLootWindowDelegate.AddDynamic(this, &ThisClass::DisplayWindowAtLocation);
 	}
+
+	if (TakeAllButton)
+	{
+		TakeAllButton->OnClicked.AddDynamic(this, &ThisClass::OnTakeAllClicked);
+	}
 }
 
 void ULootWindow::NativeDestruct()
@@ -39,6 +51,11 @@ void ULootWindow::NativeDestruct()
 	if (const auto PC = Cast<APhoenixPlayerController>(GetOwningPlayer()))
 	{
 		PC->OnDisplayLootWindowDelegate.RemoveDynamic(this, &ThisClass::DisplayWindowAtLocation);
+	}
+
+	if (TakeAllButton)
+	{
+		TakeAllButton->OnClicked.RemoveDynamic(this, &ThisClass::OnTakeAllClicked);
 	}
 }
 
@@ -60,6 +77,8 @@ void ULootWindow::NativeOnDeactivated()
 	{
 		PC->UpdateInputMode(EInputMode::GameAndUI);
 	}
+
+	LootingInventory = nullptr;
 }
 
 void ULootWindow::HandleBackAction()
@@ -76,8 +95,28 @@ void ULootWindow::DisplayWindowAtLocation(const FLootInfo& NewInfo)
 		CanvasPanelSlot->SetPosition(NewInfo.RenderLocation);
 	}
 
+	LootingInventory = NewInfo.Inventory;
+
 	if (DisplayPanel)
 	{
-		DisplayPanel->RefreshItems(NewInfo.Items);
+		DisplayPanel->RefreshItems(NewInfo.Inventory);
+	}
+}
+
+void ULootWindow::OnTakeAllClicked()
+{
+	if (DisplayPanel)
+	{
+		if (const auto PC = Cast<APhoenixPlayerController>(GetOwningPlayer()))
+		{
+			// TODO: I wonder if this should be an interface call.
+			if (const auto Inventory = PC->GetPawn()->GetComponentByClass<UInventoryComponent>())
+			{
+				Inventory->AttemptToTransferAllItemBetweenInventories(LootingInventory);
+
+				DisplayPanel->ClearListItems();
+				DeactivateWidget();
+			}
+		}
 	}
 }

@@ -46,6 +46,11 @@ int32 UInventoryComponent::HasItem(const UItemDataBase* ItemToFind)
 	return Amount;
 }
 
+void UInventoryComponent::AddItemFromItemStruct(const FInventoryItem& InInventoryItem)
+{
+	AddItem(InInventoryItem.Item, InInventoryItem.Count);
+}
+
 void UInventoryComponent::AddItem(UItemDataBase* ItemToAdd, const int32 Amount /*= 1 */ )
 {
 	int32 LocalAmount = Amount;
@@ -116,5 +121,26 @@ bool UInventoryComponent::RemoveItem(UItemDataBase* ItemToRemove, const int32 Am
 
 	// Did we actually remove anything?
 	return RemainingAmountToRemove != Amount;
+}
+
+bool UInventoryComponent::TransferItemBetweenInventories(const FInventoryItem& InInventoryItem, UInventoryComponent* From)
+{
+	if (From->RemoveItem(InInventoryItem.Item, InInventoryItem.Count))
+	{
+		AddItemFromItemStruct(InInventoryItem);
+		return true;
+	}
+
+	return false;
+}
+
+void UInventoryComponent::AttemptToTransferAllItemBetweenInventories(UInventoryComponent* From)
+{
+	for (FInventoryItem& Item : From->GetInventoryItems())
+	{
+		TransferItemBetweenInventories(Item, From);
+	}
+
+	// TODO: Log how many items were successfully added.
 }
 

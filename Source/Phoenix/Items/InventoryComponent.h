@@ -27,7 +27,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Iventory Component")
 	void AddItem(UItemDataBase* ItemToAdd, const int32 Amount = 1);
 
+	UFUNCTION(BlueprintCallable, Category = "Iventory Component")
+	void AddItemFromItemStruct(const FInventoryItem& InInventoryItem);
+
 	// Removes an item from our inventory.
+	UFUNCTION(BlueprintCallable, Category = "Iventory Component")
+	bool TransferItemBetweenInventories(const FInventoryItem& InInventoryItem, UInventoryComponent* From);
+
+	UFUNCTION(BlueprintCallable, Category = "Iventory Component")
+	void AttemptToTransferAllItemBetweenInventories(UInventoryComponent* From);
+
 	UFUNCTION(BlueprintCallable, Category = "Iventory Component")
 	bool RemoveItem(UItemDataBase* ItemToRemove, const int32 Amount = 1);
 

@@ -118,12 +118,12 @@ void APhoenixPlayerController::DisplayAllPossibleInteractionForCurrentTarget()
 	OnDisplayAllInteractionsDelegate.Broadcast(FPlayerInteractionsInfo(FVector2D(X, Y), CurrentTarget.ABSComponent, CurrentTarget.PossibleInteractions));
 }
 
-void APhoenixPlayerController::SpawnLootWindowAtLocation(const FVector& Location, const TArray<FInventoryItem>& Items)
+void APhoenixPlayerController::SpawnLootWindowAtLocation(const FVector& Location, UInventoryComponent* Inventory)
 {
 	FVector2D ScreenLocation;
 	ProjectWorldLocationToScreen(Location, ScreenLocation);
 
-	OnDisplayLootWindowDelegate.Broadcast(FLootInfo(ScreenLocation, Items));
+	OnDisplayLootWindowDelegate.Broadcast(FLootInfo(ScreenLocation, Inventory));
 }
 
 void APhoenixPlayerController::SetupInputComponent()

@@ -63,17 +63,18 @@ struct FLootInfo
 	FVector2D RenderLocation;
 
 	UPROPERTY(BlueprintReadOnly)
-	TArray<FInventoryItem> Items;
+	TObjectPtr<UInventoryComponent> Inventory;
 
 	FLootInfo()
 	{
 		RenderLocation = FVector2D::ZeroVector;
+		Inventory = nullptr;
 	}
 
-	FLootInfo(const FVector2D& InRenderLocation, const TArray<FInventoryItem>& InItems)
+	FLootInfo(const FVector2D& InRenderLocation, UInventoryComponent* InInventory)
 	{
 		RenderLocation = FVector2D::ZeroVector;
-		Items.Append(InItems);
+		Inventory = InInventory;
 	}
 };
 
@@ -104,7 +105,7 @@ public:
 	void UpdateInputMode(const EInputMode NewInputMode);
 
 	UFUNCTION(BlueprintCallable, Category = "Phoenix Player Controller")
-	void SpawnLootWindowAtLocation(const FVector& Location, const TArray<FInventoryItem>& Items);
+	void SpawnLootWindowAtLocation(const FVector& Location, UInventoryComponent* InInventory);
 
 	UFUNCTION(BlueprintCallable, Category = "Phoenix Player Controller")
 	void UpdateCurrentPlayerTargetInfo(const FTargetableInfo& NewTargetInfo);
