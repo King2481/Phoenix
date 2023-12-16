@@ -25,9 +25,6 @@ protected:
 	UFUNCTION()
 	void OnEndCursorOver(AActor* TouchedActor);
 
-	UFUNCTION()
-	void OnClicked(AActor* TouchedActor, FKey ButtonPressed);
-
 	// Called when the game starts
 	virtual void BeginPlay() override;
 

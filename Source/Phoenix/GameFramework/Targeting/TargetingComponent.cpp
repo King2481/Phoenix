@@ -26,14 +26,12 @@ void UTargetingComponent::BeginPlay()
 
 	GetOwner()->OnBeginCursorOver.AddDynamic(this, &ThisClass::OnBeginCursorOver);
 	GetOwner()->OnEndCursorOver.AddDynamic(this, &ThisClass::OnEndCursorOver);
-	GetOwner()->OnClicked.AddDynamic(this, &ThisClass::OnClicked);
 }
 
 void UTargetingComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	GetOwner()->OnBeginCursorOver.RemoveDynamic(this, &ThisClass::OnBeginCursorOver);
 	GetOwner()->OnEndCursorOver.RemoveDynamic(this, &ThisClass::OnEndCursorOver);
-	GetOwner()->OnClicked.RemoveDynamic(this, &ThisClass::OnClicked);
 
 	Super::EndPlay(EndPlayReason);
 }
@@ -76,17 +74,6 @@ void UTargetingComponent::OnEndCursorOver(AActor* TouchedActor)
 		if (MeshHighlightInfo.MeshToHighlight != nullptr)
 		{
 			MeshHighlightInfo.MeshToHighlight->SetOverlayMaterial(nullptr);
-		}
-	}
-}
-
-void UTargetingComponent::OnClicked(AActor* TouchedActor, FKey ButtonPressed)
-{
-	if (const auto PC = Cast<APhoenixPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0)))
-	{
-		if (ButtonPressed == EKeys::RightMouseButton)
-		{
-			PC->DisplayAllPossibleInteractionForCurrentTarget();
 		}
 	}
 }

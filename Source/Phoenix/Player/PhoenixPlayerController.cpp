@@ -31,6 +31,7 @@ APhoenixPlayerController::APhoenixPlayerController()
 
 	FXCursor = nullptr;
 	SelectAction = nullptr;
+	AltSelectAction = nullptr;
 	MoveCameraAction = nullptr;
 	TurnCameraAction = nullptr;
 	ZoomCameraAction = nullptr;
@@ -138,6 +139,7 @@ void APhoenixPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SelectAction, ETriggerEvent::Triggered, this, &ThisClass::OnSelectTriggered);
 		EnhancedInputComponent->BindAction(SelectAction, ETriggerEvent::Completed, this, &ThisClass::OnSelectReleased);
 		EnhancedInputComponent->BindAction(SelectAction, ETriggerEvent::Canceled, this, &ThisClass::OnSelectReleased);
+		EnhancedInputComponent->BindAction(AltSelectAction, ETriggerEvent::Started, this, &ThisClass::OnAltSelectStarted);
 
 		// Setup move camera events
 		EnhancedInputComponent->BindAction(MoveCameraAction, ETriggerEvent::Triggered, this, &ThisClass::OnMoveCameraTriggered);
@@ -217,6 +219,11 @@ void APhoenixPlayerController::OnSelectReleased()
 	bClickedTargetableThisClick = false;
 
 	OnSelectPressedDelegate.Broadcast(false);
+}
+
+void APhoenixPlayerController::OnAltSelectStarted()
+{
+	DisplayAllPossibleInteractionForCurrentTarget();
 }
 
 void APhoenixPlayerController::OnMoveCameraTriggered(const FInputActionValue& Value)

@@ -74,6 +74,9 @@ void UInteractionListWidget::DisplayItemsAtLocation(const FPlayerInteractionsInf
 	}
 	else
 	{
-		// TODO: Log
+		if (IsActivated())
+		{
+			DeactivateWidget();
+		}
 	}
 }

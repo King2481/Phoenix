@@ -144,6 +144,9 @@ protected:
 	TObjectPtr<UInputAction> SelectAction;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> AltSelectAction;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> MoveCameraAction;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Input")
@@ -183,6 +186,7 @@ protected:
 	void OnSelectStarted();
 	void OnSelectTriggered();
 	void OnSelectReleased();
+	void OnAltSelectStarted();
 
 	void OnMoveCameraTriggered(const FInputActionValue& Value);
 	void OnMoveCameraReleased();
