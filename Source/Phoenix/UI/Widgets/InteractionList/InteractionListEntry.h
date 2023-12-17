@@ -21,6 +21,9 @@ class PHOENIX_API UInteractionListEntry : public UUserWidget, public IUserObject
 public:
 
 	UInteractionListEntry(const FObjectInitializer& ObjectInitializer);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Interaction List Entry")
+	UInteractionListEntryObject* InteractionObject;
 	
 protected:
 
@@ -29,6 +32,4 @@ protected:
 
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Interaction List Entry")
-	UInteractionListEntryObject* InteractionObject;
 };

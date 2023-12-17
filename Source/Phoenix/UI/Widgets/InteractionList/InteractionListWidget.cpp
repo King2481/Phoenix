@@ -2,8 +2,11 @@
 
 
 #include "Phoenix/UI/Widgets/InteractionList/InteractionListWidget.h"
+#include "Phoenix/UI/Widgets/InteractionList/InteractionListEntry.h"
 #include "Phoenix/UI/Widgets/InteractionList/InteractionListEntryObject.h"
 #include "Phoenix/Player/PhoenixPlayerController.h"
+#include "Phoenix/Abilities/PhoenixAbilitySystemComponent.h"
+#include "Phoenix/GameFramework/Targeting/InteractionData.h"
 
 #include "Input/CommonUIInputTypes.h"
 #include "Components/ListView.h"
@@ -32,6 +35,11 @@ void UInteractionListWidget::NativeConstruct()
 	if (const auto PC = Cast<APhoenixPlayerController>(GetOwningPlayer()))
 	{
 		PC->OnDisplayAllInteractionsDelegate.AddDynamic(this, &ThisClass::DisplayItemsAtLocation);
+
+		if (ListView)
+		{
+			ListView->OnItemClicked().AddUObject(this, &ThisClass::OnListItemClicked);
+		}
 	}
 }
 
@@ -42,6 +50,11 @@ void UInteractionListWidget::NativeDestruct()
 	if (const auto PC = Cast<APhoenixPlayerController>(GetOwningPlayer()))
 	{
 		PC->OnDisplayAllInteractionsDelegate.RemoveDynamic(this, &ThisClass::DisplayItemsAtLocation);
+
+		if (ListView)
+		{
+			ListView->OnItemClicked().Clear();
+		}
 	}
 }
 
@@ -76,6 +89,21 @@ void UInteractionListWidget::DisplayItemsAtLocation(const FPlayerInteractionsInf
 	{
 		if (IsActivated())
 		{
+			DeactivateWidget();
+		}
+	}
+}
+
+void UInteractionListWidget::OnListItemClicked(UObject* Object)
+{
+	if (const auto EntryWidget = ListView->GetEntryWidgetFromItem<UInteractionListEntry>(Object))
+	{
+		if (const auto ABS = GetOwningPlayerPawn()->GetComponentByClass<UPhoenixAbilitySystemComponent>())
+		{
+			const auto TargetData = FTargetData(EntryWidget->InteractionObject->Target);
+			
+			ABS->SetTargetDataAndTryAbility(TargetData, EntryWidget->InteractionObject->Interaction.Get()->InteractionAbility.LoadSynchronous());
+			
 			DeactivateWidget();
 		}
 	}

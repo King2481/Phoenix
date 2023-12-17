@@ -40,5 +40,8 @@ protected:
 
 	UFUNCTION()
 	void DisplayItemsAtLocation(const FPlayerInteractionsInfo& NewInfo);
+
+	UFUNCTION()
+	void OnListItemClicked(UObject* Object);
 	
 };
