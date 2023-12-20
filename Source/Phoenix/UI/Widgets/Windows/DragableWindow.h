@@ -30,6 +30,9 @@ protected:
 	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
 	// End of UUserWidget interface
 
+	virtual void NativeOnActivated() override;
+	virtual void NativeOnDeactivated() override;
+
 	UFUNCTION()
 	void OnWindowDrop(UDragDropOperation* Operation);
 

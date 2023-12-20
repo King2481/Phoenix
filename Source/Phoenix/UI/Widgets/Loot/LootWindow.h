@@ -31,9 +31,6 @@ public:
 	virtual void NativeOnInitialized() override;
 	// End of UUserWidget interface
 
-	virtual void NativeOnActivated() override;
-	virtual void NativeOnDeactivated() override;
-
 	void HandleBackAction();
 
 	// Data Table for the back button

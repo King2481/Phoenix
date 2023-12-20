@@ -27,6 +27,9 @@ public:
 	virtual void NativeOnInitialized() override;
 	// End of UUserWidget interface
 
+	virtual void NativeOnActivated() override;
+	virtual void NativeOnDeactivated() override;
+
 protected:
 
 	void HandleBackAction();

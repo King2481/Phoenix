@@ -58,6 +58,26 @@ void UInteractionListWidget::NativeDestruct()
 	}
 }
 
+void UInteractionListWidget::NativeOnActivated()
+{
+	Super::NativeOnActivated();
+
+	if (const auto PC = Cast<APhoenixPlayerController>(GetOwningPlayer()))
+	{
+		PC->UpdateInputMode(EInputMode::GameAndUI);
+	}
+}
+
+void UInteractionListWidget::NativeOnDeactivated()
+{
+	Super::NativeOnDeactivated();
+
+	if (const auto PC = Cast<APhoenixPlayerController>(GetOwningPlayer()))
+	{
+		PC->UpdateInputMode(EInputMode::GameAndUI);
+	}
+}
+
 void UInteractionListWidget::HandleBackAction()
 {
 	DeactivateWidget();

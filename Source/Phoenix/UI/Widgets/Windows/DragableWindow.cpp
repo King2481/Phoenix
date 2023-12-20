@@ -39,6 +39,26 @@ void UDragableWindow::NativeDestruct()
 	}
 }
 
+void UDragableWindow::NativeOnActivated()
+{
+	Super::NativeOnActivated();
+
+	if (const auto PC = Cast<APhoenixPlayerController>(GetOwningPlayer()))
+	{
+		PC->UpdateInputMode(EInputMode::GameAndUI);
+	}
+}
+
+void UDragableWindow::NativeOnDeactivated()
+{
+	Super::NativeOnDeactivated();
+
+	if (const auto PC = Cast<APhoenixPlayerController>(GetOwningPlayer()))
+	{
+		PC->UpdateInputMode(EInputMode::GameAndUI);
+	}
+}
+
 void UDragableWindow::OnClosedClicked()
 {
 	DeactivateWidget();

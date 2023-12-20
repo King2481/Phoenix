@@ -59,26 +59,6 @@ void ULootWindow::NativeDestruct()
 	}
 }
 
-void ULootWindow::NativeOnActivated()
-{
-	Super::NativeOnActivated();
-
-	if (const auto PC = Cast<APhoenixPlayerController>(GetOwningPlayer()))
-	{
-		PC->UpdateInputMode(EInputMode::GameAndUI);
-	}
-}
-
-void ULootWindow::NativeOnDeactivated()
-{
-	Super::NativeOnDeactivated();
-
-	if (const auto PC = Cast<APhoenixPlayerController>(GetOwningPlayer()))
-	{
-		PC->UpdateInputMode(EInputMode::GameAndUI);
-	}
-}
-
 void ULootWindow::HandleBackAction()
 {
 	DeactivateWidget();
