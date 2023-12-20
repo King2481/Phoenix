@@ -19,6 +19,6 @@ class PHOENIX_API UWindowDragOperation : public UDragDropOperation
 public:
 
 	FVector2D DragOffset = FVector2D::ZeroVector;
-	TObjectPtr<UUserWidget> WidgetReference;
+	TObjectPtr<UUserWidget> WidgetReference = nullptr;
 	
 };

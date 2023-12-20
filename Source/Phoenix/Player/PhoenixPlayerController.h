@@ -73,7 +73,7 @@ struct FLootInfo
 
 	FLootInfo(const FVector2D& InRenderLocation, UInventoryComponent* InInventory)
 	{
-		RenderLocation = FVector2D::ZeroVector;
+		RenderLocation = InRenderLocation;
 		Inventory = InInventory;
 	}
 };

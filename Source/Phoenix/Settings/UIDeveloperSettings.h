@@ -21,4 +21,7 @@ public:
 	UPROPERTY(Config, BlueprintReadOnly, EditAnywhere, Category = "Phoenix UI")
 	TSoftObjectPtr<UMouseIconSet> DefaultMouseIconSet = nullptr;
 
+	UPROPERTY(Config, BlueprintReadOnly, EditAnywhere, Category = "Phoenix UI")
+	TSoftClassPtr<UUserWidget> DefaultDragWidget = nullptr;
+
 };

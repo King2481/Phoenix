@@ -2,6 +2,7 @@
 
 
 #include "Phoenix/World/Placeable/Door.h"
+#include "Phoenix/GameFramework/Health/HealthComponent.h"
 #include "Phoenix/GameFramework/NameComponent.h"
 
 ADoor::ADoor()

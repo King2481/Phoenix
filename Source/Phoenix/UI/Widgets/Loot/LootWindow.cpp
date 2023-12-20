@@ -77,8 +77,6 @@ void ULootWindow::NativeOnDeactivated()
 	{
 		PC->UpdateInputMode(EInputMode::GameAndUI);
 	}
-
-	LootingInventory = nullptr;
 }
 
 void ULootWindow::HandleBackAction()
