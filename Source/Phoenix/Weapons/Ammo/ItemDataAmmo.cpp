@@ -7,4 +7,5 @@ UItemDataAmmo::UItemDataAmmo()
 {
 	AmmoType = nullptr;
 	BulletFiringData = nullptr;
+	AmmoCasing = nullptr;
 }

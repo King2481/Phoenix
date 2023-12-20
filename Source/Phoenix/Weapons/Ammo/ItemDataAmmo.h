@@ -26,4 +26,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Ammo")
 	TObjectPtr<UBulletFiringData> BulletFiringData;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Ammo")
+	TObjectPtr<UStaticMesh> AmmoCasing;
 };
