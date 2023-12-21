@@ -54,6 +54,8 @@ void UBulletFiringComponent::FireBullet()
 
 			UPhoenixGameplayStatics::SpawnProjectile(this, SpawnInfo);
 		}
+
+		OnShotsFiredDelegate.Broadcast();
 	}
 }
 

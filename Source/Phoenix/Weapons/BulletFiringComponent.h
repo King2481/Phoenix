@@ -39,6 +39,8 @@ struct FFireBulletQueueInfo
 	}
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnShotsFiredDelegate);
+
 /**
  * 
  */
@@ -53,6 +55,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Bullet Firing Component")
 	void QueueAndFireBullets(const FFireBulletQueueInfo& QueueInfo);
+
+	UPROPERTY(BlueprintAssignable)
+	FOnShotsFiredDelegate OnShotsFiredDelegate;
 
 private:
 
