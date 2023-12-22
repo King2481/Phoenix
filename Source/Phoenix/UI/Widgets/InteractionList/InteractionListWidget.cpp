@@ -6,6 +6,7 @@
 #include "Phoenix/UI/Widgets/InteractionList/InteractionListEntryObject.h"
 #include "Phoenix/Player/PhoenixPlayerController.h"
 #include "Phoenix/Abilities/PhoenixAbilitySystemComponent.h"
+#include "Phoenix/Abilities/PhoenixGameplayAbility.h"
 #include "Phoenix/GameFramework/Targeting/InteractionData.h"
 
 #include "Input/CommonUIInputTypes.h"
