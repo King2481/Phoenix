@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/DamageType.h"
+#include "GameplayTagContainer.h" // FGameplayTag
 #include "PhoenixDamageType.generated.h"
 
 /**
