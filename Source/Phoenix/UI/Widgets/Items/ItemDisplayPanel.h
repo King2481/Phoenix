@@ -22,7 +22,9 @@ public:
 
 	UItemDisplayPanel(const FObjectInitializer& ObjectInitializer);
 
+	UFUNCTION(BlueprintCallable, Category = "Item Display Panel")
 	void RefreshItems(UInventoryComponent* InInventory);
+
 	void ClearListItems();
 
 	TArray<UUserWidget*> GetPanelItems() const;
