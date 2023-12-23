@@ -82,6 +82,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerTargetChangedDelegate, cons
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDisplayAllInteractionsDelegate, const FPlayerInteractionsInfo&, NewInfo);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDisplayLootWindowDelegate, const FLootInfo&, NewInfo);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSelectPressedDelegate, bool, bIsDown);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterMenuSelectedDelegate);
 
 /**
  * 
@@ -124,6 +125,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnSelectPressedDelegate OnSelectPressedDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnCharacterMenuSelectedDelegate OnCharacterMenuSelectedDelegate;
 
 protected:
 
@@ -170,6 +174,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> ShowInteractablesAction;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> ShowCharacterMenuAction;
+
 	/** Time Threshold to know if it was a short press */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	float ShortPressThreshold;
@@ -199,6 +206,7 @@ protected:
 	void OnToggleGroupMoveStarted();
 	void OnShowInteractablesStarted();
 	void OnShowInteractablesReleased();
+	void OnShowCharacterMenuStarted();
 
 	void OnMoveCharacterTriggered(const FInputActionValue& Value);
 

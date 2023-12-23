@@ -40,6 +40,7 @@ APhoenixPlayerController::APhoenixPlayerController()
 	ToggleGroupMoveAction = nullptr;
 	MoveCharacterAction = nullptr;
 	ShowInteractablesAction = nullptr;
+	ShowCharacterMenuAction = nullptr;
 	ShortPressThreshold = 0.2f;
 	DisableFreeCamModeThreshold = 0.2f;
 
@@ -154,8 +155,9 @@ void APhoenixPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(ToggleGroupMoveAction, ETriggerEvent::Started, this, &ThisClass::OnToggleGroupMoveStarted);
 		EnhancedInputComponent->BindAction(MoveCharacterAction, ETriggerEvent::Triggered, this, &ThisClass::OnMoveCharacterTriggered);
 
-		EnhancedInputComponent->BindAction(SelectAction, ETriggerEvent::Started, this, &ThisClass::OnShowInteractablesStarted);
-		EnhancedInputComponent->BindAction(SelectAction, ETriggerEvent::Completed, this, &ThisClass::OnShowInteractablesReleased);
+		EnhancedInputComponent->BindAction(ShowInteractablesAction, ETriggerEvent::Started, this, &ThisClass::OnShowInteractablesStarted);
+		EnhancedInputComponent->BindAction(ShowInteractablesAction, ETriggerEvent::Completed, this, &ThisClass::OnShowInteractablesReleased);
+		EnhancedInputComponent->BindAction(ShowCharacterMenuAction, ETriggerEvent::Started, this, &ThisClass::OnShowCharacterMenuStarted);
 	}
 }
 
@@ -290,6 +292,11 @@ void APhoenixPlayerController::OnShowInteractablesStarted()
 void APhoenixPlayerController::OnShowInteractablesReleased()
 {
 
+}
+
+void APhoenixPlayerController::OnShowCharacterMenuStarted()
+{
+	OnCharacterMenuSelectedDelegate.Broadcast();
 }
 
 void APhoenixPlayerController::OnMoveCharacterTriggered(const FInputActionValue& Value)

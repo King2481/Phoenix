@@ -15,7 +15,7 @@ ULootWindow::ULootWindow(const FObjectInitializer& ObjectInitializer)
 {
 	bSetVisibilityOnActivated = true;
 	bSetVisibilityOnDeactivated = true;
-	SetBindVisibilities(ESlateVisibility::SelfHitTestInvisible, ESlateVisibility::Collapsed, false);
+	SetBindVisibilities(ESlateVisibility::Visible, ESlateVisibility::Collapsed, false);
 
 	DisplayPanel = nullptr;
 	TakeAllButton = nullptr;
