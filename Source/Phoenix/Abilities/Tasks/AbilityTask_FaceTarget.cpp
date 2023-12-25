@@ -1,7 +1,7 @@
 // Created by Bruce Crum.
 
 
-#include "Phoenix/Abilities/AbilityTask_FaceTarget.h"
+#include "Phoenix/Abilities/Tasks/AbilityTask_FaceTarget.h"
 
 UAbilityTask_FaceTarget::UAbilityTask_FaceTarget()
 {

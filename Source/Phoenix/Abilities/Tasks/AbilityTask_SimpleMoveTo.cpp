@@ -1,7 +1,7 @@
 // Created by Bruce Crum.
 
 
-#include "Phoenix/Abilities/AbilityTask_SimpleMoveTo.h"
+#include "Phoenix/Abilities/Tasks/AbilityTask_SimpleMoveTo.h"
 
 #include "NavigationSystem.h"
 
