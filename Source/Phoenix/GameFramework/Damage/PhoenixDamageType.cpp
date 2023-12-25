@@ -5,8 +5,5 @@
 
 UPhoenixDamageType::UPhoenixDamageType()
 {
-	bDamageCarriesOverOnHealthDepletion = true;
-	bNonLethal = false;
 	bIsHeal = false;
-	DamageTypeColor = FLinearColor::White;
 }

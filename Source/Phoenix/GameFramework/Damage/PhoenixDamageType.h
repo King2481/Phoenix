@@ -23,14 +23,6 @@ public:
 	FGameplayTag DamageTypeTag;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Phoenix Damage Type")
-	bool bDamageCarriesOverOnHealthDepletion;
-
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Phoenix Damage Type")
-	bool bNonLethal;
-
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Phoenix Damage Type")
 	bool bIsHeal;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Phoenix Damage Type")
-	FLinearColor DamageTypeColor;
 };

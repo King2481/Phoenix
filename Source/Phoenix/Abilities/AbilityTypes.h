@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CoreTypes.h"
+#include "GameplayTagContainer.h"
 #include "AbilityTypes.generated.h"
 
 class UPhoenixDamageType;
@@ -21,19 +22,24 @@ struct FModifyHealthInfo
 	TSubclassOf<UPhoenixDamageType> DamageType;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FGameplayTagContainer DamageTagContainer;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TObjectPtr<UPhoenixAbilitySystemComponent> EffectedFrom;
 
 	FModifyHealthInfo()
 	{
 		ChangeAmount = 0;
 		DamageType = nullptr;
+		DamageTagContainer = FGameplayTagContainer();
 		EffectedFrom = nullptr;
 	}
 
-	FModifyHealthInfo(const int32 InChangeAmount, TSubclassOf<UPhoenixDamageType> InDamageType)
+	FModifyHealthInfo(const int32 InChangeAmount, TSubclassOf<UPhoenixDamageType> InDamageType, const FGameplayTagContainer& InContainer)
 	{
 		ChangeAmount = InChangeAmount;
 		DamageType = InDamageType;
+		DamageTagContainer = InContainer;
 		EffectedFrom = nullptr;
 	}
 };

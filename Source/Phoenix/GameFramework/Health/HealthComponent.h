@@ -45,19 +45,9 @@ struct FHealthChangeResult
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	int32 CollectiveHealthPoolValue;
-
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	float CollectiveHealthPoolValueAsRatio;
-
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	TArray<FHealthTypeEntry> CurrentHealthPools;
-
 	FHealthChangeResult()
 	{
-		CollectiveHealthPoolValue = 0;
-		CollectiveHealthPoolValueAsRatio = 0.0f;
+
 	}
 };
 

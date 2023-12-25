@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Blueprint/UserWidgetPool.h"
 #include "FloatingTextNotification.generated.h"
 
 struct FHealthChangeInfo;
@@ -28,4 +29,8 @@ protected:
 
 	UFUNCTION()
 	void OnOwnersHealthChanged(const FHealthChangeResult& NewInfo);
+
+	UPROPERTY()
+	FUserWidgetPool FloatingTextWidgetPool;
+
 };

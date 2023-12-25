@@ -45,14 +45,14 @@ void UHealthBar::OnTrackingHealthChanged(const FHealthChangeResult& NewInfo)
 {
 	if (HealthBar)
 	{	
-		float HealthAsRatio = NewInfo.CollectiveHealthPoolValueAsRatio;
+		/*float HealthAsRatio = NewInfo.CollectiveHealthPoolValueAsRatio;
 		HealthAsRatio = bInverselyFill ? 1.0f - HealthAsRatio : HealthAsRatio;
-		HealthBar->SetPercent(HealthAsRatio);
+		HealthBar->SetPercent(HealthAsRatio);*/
 	}
 
 	if (HealthText)
 	{
 		// TODO: Sequence to account for multiple health pools.
-		HealthText->SetText(FText::FromString(FString::FromInt(NewInfo.CollectiveHealthPoolValue)));
+		// HealthText->SetText(FText::FromString(FString::FromInt(NewInfo.CollectiveHealthPoolValue)));
 	}
 }

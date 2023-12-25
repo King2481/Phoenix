@@ -12,6 +12,7 @@ UFloatingTextNotification::UFloatingTextNotification()
 	PrimaryComponentTick.bCanEverTick = false;
 	SetComponentTickEnabled(false);
 
+	FloatingTextWidgetPool = FUserWidgetPool();
 }
 
 
@@ -19,6 +20,8 @@ UFloatingTextNotification::UFloatingTextNotification()
 void UFloatingTextNotification::BeginPlay()
 {
 	Super::BeginPlay();
+
+	FloatingTextWidgetPool.SetWorld(GetWorld());
 
 	if (const auto HealthComponent = GetOwner()->GetComponentByClass<UHealthComponent>())
 	{
@@ -28,6 +31,8 @@ void UFloatingTextNotification::BeginPlay()
 
 void UFloatingTextNotification::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	FloatingTextWidgetPool.ReleaseAll(true);
+
 	if (const auto HealthComponent = GetOwner()->GetComponentByClass<UHealthComponent>())
 	{
 		HealthComponent->OnHealthChangedDelegate.RemoveDynamic(this, &ThisClass::OnOwnersHealthChanged);
