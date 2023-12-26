@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "Phoenix/GameFramework/PhoenixTypes.h" // FProjectileProperties
 #include "BulletFiringData.generated.h"
 
 class AProjectileBase;
-struct FDamageInfo;
 
 /**
  * 
@@ -25,10 +25,10 @@ public:
 	TSubclassOf<AProjectileBase> ProjectileToSpawn;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Ammo")
-	TArray<FDamageInfo> BulletDamageInfo;
+	uint8 TotalShots;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Ammo")
-	uint8 TotalShots;
+	FProjectileProperties ProjectileProperties;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Ammo", meta = (ClampMin = "1.0", UIMin = "1.0"))
 	float RateOfFire;

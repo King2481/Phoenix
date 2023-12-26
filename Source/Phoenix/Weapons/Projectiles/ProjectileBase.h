@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Phoenix/GameFramework/PhoenixTypes.h" // FProjectileProperties
 #include "ProjectileBase.generated.h"
 
 class UProjectileMovementComponent;
@@ -17,6 +18,8 @@ public:
 
 	// Sets default values for this actor's properties
 	AProjectileBase();
+
+	virtual void InitProjectile(const FProjectileProperties& ProjectileInfo);
 
 protected:
 

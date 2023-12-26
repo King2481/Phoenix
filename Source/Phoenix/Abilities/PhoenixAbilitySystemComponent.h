@@ -30,7 +30,7 @@ public:
 	void ClearPhoenixAbility(TSubclassOf<UPhoenixGameplayAbility> Ability);
 
 	UFUNCTION(BlueprintCallable, Category = "Phoenix Ability System")
-	void HealthModified(const FModifyHealthInfo& ModifyHealthInfo);
+	void ModifyHealth(const FModifyHealthInfo& ModifyHealthInfo);
 
 	UFUNCTION(BlueprintCallable, Category = "Phoenix Ability System")
 	void SetTargetDataAndTryAbility(const FTargetData& InTargetData, TSubclassOf<UPhoenixGameplayAbility> Ability);

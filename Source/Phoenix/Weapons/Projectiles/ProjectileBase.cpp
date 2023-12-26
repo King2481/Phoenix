@@ -1,7 +1,7 @@
 // Created by Bruce Crum.
 
 
-#include "Phoenix/Weapons/ProjectileBase.h"
+#include "Phoenix/Weapons/Projectiles/ProjectileBase.h"
 
 #include "GameFramework/ProjectileMovementComponent.h"
 
@@ -18,3 +18,15 @@ AProjectileBase::AProjectileBase()
 	ProjectileMovement->bShouldBounce = false;
 	ProjectileMovement->ProjectileGravityScale = 0.0f;
 }
+
+void AProjectileBase::InitProjectile(const FProjectileProperties& ProjectileInfo)
+{
+	SetLifeSpan(ProjectileInfo.ProjectileLifeSpan);
+
+	ProjectileMovement->InitialSpeed = ProjectileInfo.ProjectileSpeed;
+	ProjectileMovement->MaxSpeed = ProjectileInfo.ProjectileSpeed;
+	ProjectileMovement->bShouldBounce = ProjectileInfo.bShouldBounce;
+	ProjectileMovement->Bounciness = ProjectileInfo.Bounciness;
+	ProjectileMovement->ProjectileGravityScale = ProjectileInfo.GravityScale;
+}
+

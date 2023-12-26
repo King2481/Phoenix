@@ -45,10 +45,13 @@ void UBulletFiringComponent::FireBullet()
 	{
 		for (int i = 0; i < CurrentQueue.BulletFiringData->TotalShots; ++i)
 		{
+			// TOOD: Add Weapon Damage data if applicable. 
+
 			auto SpawnInfo = FProjectileSpawnInfo();
 			SpawnInfo.ProjectileToSpawn = CurrentQueue.BulletFiringData->ProjectileToSpawn;
 			SpawnInfo.SpawnLocation = GetComponentLocation();
 			SpawnInfo.SpawnDirection = CalculateShotDirection();
+			SpawnInfo.ProjectileProperties = CurrentQueue.BulletFiringData->ProjectileProperties;
 			SpawnInfo.Owner = GetOwner();
 			SpawnInfo.Instigator = nullptr;
 

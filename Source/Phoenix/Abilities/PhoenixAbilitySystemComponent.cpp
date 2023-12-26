@@ -38,7 +38,7 @@ void UPhoenixAbilitySystemComponent::SetTargetDataAndTryAbility(const FTargetDat
 	TryActivateAbilityByClass(Ability);
 }
 
-void UPhoenixAbilitySystemComponent::HealthModified(const FModifyHealthInfo& ModifyHealthInfo)
+void UPhoenixAbilitySystemComponent::ModifyHealth(const FModifyHealthInfo& ModifyHealthInfo)
 {
 	ChangeHealthInfoDelegate.Broadcast(ModifyHealthInfo);
 }

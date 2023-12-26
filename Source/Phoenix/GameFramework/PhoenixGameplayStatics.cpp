@@ -3,6 +3,7 @@
 
 #include "Phoenix/GameFramework/PhoenixGameplayStatics.h"
 #include "Phoenix/GameFramework/Damage/DamageCalculationType.h"
+#include "Phoenix/Weapons/Projectiles/ProjectileBase.h"
 
 int32 UPhoenixGameplayStatics::RollDice(const TArray<FDiceRollInfo>& InDiceRoll)
 {
@@ -40,14 +41,13 @@ AProjectileBase* UPhoenixGameplayStatics::SpawnProjectile(const UObject* WorldCo
 	{
 		if (IsValid(SpawnInfo.ProjectileToSpawn))
 		{
-			FActorSpawnParameters SpawnParams;
-			SpawnParams.Instigator = SpawnInfo.Instigator;
-			SpawnParams.Owner = SpawnInfo.Owner;
-
 			const auto SpawnTransform = FTransform(SpawnInfo.SpawnDirection.Rotation(), SpawnInfo.SpawnLocation);
-;
-			if (const auto Projectile = World->SpawnActor<AProjectileBase>(SpawnInfo.ProjectileToSpawn, SpawnTransform, SpawnParams))
+
+			if (const auto Projectile = World->SpawnActorDeferred<AProjectileBase>(SpawnInfo.ProjectileToSpawn, SpawnTransform, SpawnInfo.Owner, SpawnInfo.Instigator))
 			{
+				Projectile->InitProjectile(SpawnInfo.ProjectileProperties);
+				UGameplayStatics::FinishSpawningActor(Projectile, SpawnTransform);
+
 				return Projectile;
 			}
 		}

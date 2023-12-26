@@ -11,7 +11,7 @@ class UPhoenixDamageType;
 class UPhoenixAbilitySystemComponent;
 
 USTRUCT(BlueprintType)
-struct FModifyHealthInfo
+struct FDamageInfo
 {
 	GENERATED_BODY()
 
@@ -21,6 +21,22 @@ struct FModifyHealthInfo
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TSubclassOf<UPhoenixDamageType> DamageType;
 
+	FDamageInfo()
+	{
+		ChangeAmount = 0;
+		DamageType = nullptr;
+	}
+
+};
+
+USTRUCT(BlueprintType)
+struct FModifyHealthInfo
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TArray<FDamageInfo> DamageSources;
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	FGameplayTagContainer DamageTagContainer;
 
@@ -29,16 +45,12 @@ struct FModifyHealthInfo
 
 	FModifyHealthInfo()
 	{
-		ChangeAmount = 0;
-		DamageType = nullptr;
 		DamageTagContainer = FGameplayTagContainer();
 		EffectedFrom = nullptr;
 	}
 
-	FModifyHealthInfo(const int32 InChangeAmount, TSubclassOf<UPhoenixDamageType> InDamageType, const FGameplayTagContainer& InContainer)
+	FModifyHealthInfo(const FGameplayTagContainer& InContainer)
 	{
-		ChangeAmount = InChangeAmount;
-		DamageType = InDamageType;
 		DamageTagContainer = InContainer;
 		EffectedFrom = nullptr;
 	}

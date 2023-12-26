@@ -22,7 +22,7 @@ public:
 	UItemDataWeapon();
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Weapon")
-	TArray<FDamageInfo> DamageInfo;
+	TArray<FDamageCalculationInfo> DamageCalculationInfo;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Weapon")
 	TSubclassOf<UPhoenixGameplayAbility> MainHandAttackAbility;

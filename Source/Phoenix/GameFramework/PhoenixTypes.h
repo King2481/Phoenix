@@ -55,7 +55,7 @@ struct FDiceRollInfo
 };
 
 USTRUCT(BlueprintType)
-struct FDamageInfo
+struct FDamageCalculationInfo
 {
 	GENERATED_BODY()
 
@@ -65,7 +65,7 @@ struct FDamageInfo
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Instanced)
 	TArray<TObjectPtr<UDamageCalculationTypeBase>> DamageCalculationTypes;
 
-	FDamageInfo()
+	FDamageCalculationInfo()
 	{
 		DamageType = nullptr;
 	}
@@ -127,6 +127,44 @@ struct FDifficultyClassInfo
 };
 
 USTRUCT(BlueprintType)
+struct FProjectileProperties
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	float ProjectileSpeed;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	float ProjectileLifeSpan;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	bool bShouldBounce;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (EditCondition = "bShouldBounce", EditConditionHides))
+	float Bounciness;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (EditCondition = "bShouldBounce", EditConditionHides))
+	uint8 MaxBounces;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	float GravityScale;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TArray<FDamageCalculationInfo> DamageCalculations;
+
+	FProjectileProperties()
+	{
+		ProjectileSpeed = 4500.0f;
+		ProjectileLifeSpan = 3.0f;
+		bShouldBounce = false;
+		Bounciness = 0.4f;
+		MaxBounces = 1;
+
+		GravityScale = 0.0f;
+	}
+};
+
+USTRUCT(BlueprintType)
 struct FProjectileSpawnInfo
 {
 	GENERATED_BODY()
@@ -141,6 +179,9 @@ struct FProjectileSpawnInfo
 	FVector SpawnLocation;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FProjectileProperties ProjectileProperties;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TObjectPtr<AActor> Owner;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
@@ -151,16 +192,8 @@ struct FProjectileSpawnInfo
 		ProjectileToSpawn = nullptr;
 		SpawnDirection = FVector::ZeroVector;
 		SpawnLocation = FVector::ZeroVector;
+		ProjectileProperties = FProjectileProperties();
 		Owner = nullptr;
 		Instigator = nullptr;
-	}
-
-	FProjectileSpawnInfo(TSubclassOf<AProjectileBase> InProjectileClass, const FVector& InShotDirection, const FVector& InSpawnLocation, AActor* InOwner, APawn* InInstigator)
-	{
-		ProjectileToSpawn = InProjectileClass;
-		SpawnDirection = InShotDirection;
-		SpawnLocation = InSpawnLocation;
-		Owner = InOwner;
-		Instigator = InInstigator;
 	}
 };
