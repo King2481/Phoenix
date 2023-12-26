@@ -53,7 +53,7 @@ void UBulletFiringComponent::FireBullet()
 			SpawnInfo.SpawnDirection = CalculateShotDirection();
 			SpawnInfo.ProjectileProperties = CurrentQueue.BulletFiringData->ProjectileProperties;
 			SpawnInfo.Owner = GetOwner();
-			SpawnInfo.Instigator = nullptr;
+			SpawnInfo.Instigator = GetOwner()->GetInstigator();
 
 			UPhoenixGameplayStatics::SpawnProjectile(this, SpawnInfo);
 		}

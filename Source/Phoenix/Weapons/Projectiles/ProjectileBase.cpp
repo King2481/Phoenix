@@ -21,6 +21,7 @@ void AProjectileBase::InitProjectile(const FProjectileProperties& ProjectileInfo
 {
 	SetLifeSpan(ProjectileInfo.ProjectileLifeSpan);
 	RemainingBounces = ProjectileInfo.MaxBounces;
+	DamageCalculations = ProjectileInfo.DamageCalculations;
 
 	ProjectileMovement->InitialSpeed = ProjectileInfo.ProjectileSpeed;
 	ProjectileMovement->MaxSpeed = ProjectileInfo.ProjectileSpeed;

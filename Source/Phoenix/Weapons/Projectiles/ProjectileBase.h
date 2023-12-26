@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Phoenix/GameFramework/PhoenixTypes.h" // FProjectileProperties
+#include "Phoenix/GameFramework/PhoenixTypes.h" // FProjectileProperties, FDamageCalculationInfo
 #include "ProjectileBase.generated.h"
 
 class UProjectileMovementComponent;
@@ -29,6 +29,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Projectile Base")
 	int32 RemainingBounces;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Projectile Base")
+	TArray<FDamageCalculationInfo> DamageCalculations;
 
 
 };

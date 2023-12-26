@@ -3,6 +3,7 @@
 
 #include "Phoenix/Weapons/Projectiles/ImpactProjectile.h"
 #include "Phoenix/Abilities/PhoenixAbilitySystemComponent.h"
+#include "Phoenix/GameFramework/Damage/DamageCalculationType.h"
 
 #include "Components/SphereComponent.h"
 
@@ -33,7 +34,26 @@ void AImpactProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 {
 	if (const auto ABS = OtherActor->GetComponentByClass<UPhoenixAbilitySystemComponent>())
 	{
+		FModifyHealthInfo Info;
 
+		if (GetInstigator())
+		{
+			Info.CausedBy = GetInstigator()->FindComponentByClass<UPhoenixAbilitySystemComponent>();
+		}
+
+		for (FDamageCalculationInfo Damage : DamageCalculations)
+		{
+			int32 TotalDamageFromSource = 0;
+			
+			for (UDamageCalculationTypeBase* Calculation : Damage.DamageCalculationTypes)
+			{
+				TotalDamageFromSource += Calculation->CalculateDamage();
+			}
+
+			Info.AddDamageSource(FDamageInfo(TotalDamageFromSource, Damage.DamageType));
+		}
+
+		ABS->ModifyHealth(Info);
 	}
 
 	if (--RemainingBounces <= 0)

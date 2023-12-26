@@ -86,6 +86,8 @@ void APhoenixCharacter::OnDeath()
 	}
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetMesh()->SetCollisionProfileName("Ragdoll");
+	GetMesh()->SetSimulatePhysics(true);
 	BlueprintOnDeath();
 }
 

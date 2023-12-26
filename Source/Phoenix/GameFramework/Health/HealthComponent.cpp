@@ -57,19 +57,27 @@ void UHealthComponent::OnHealthUpdatedEvent(const FModifyHealthInfo& ModifyHealt
 {
 	for (FHealthTypeEntry& Entry : HealthEntrys)
 	{
-		if (HealthEntrys[0].Amount <= 0.0f)
+		for (FDamageInfo Damage : ModifyHealthInfo.DamageSources)
 		{
-			if (HealthEntrys[0].HealthType->bIsCritical)
+			HealthEntrys[0].Amount -= Damage.ChangeAmount;
+
+			if (HealthEntrys[0].Amount <= 0.0f)
 			{
-				OnDeathDelegate.Broadcast(FOnDeathInfo(GetOwner(), ModifyHealthInfo.EffectedFrom));
-			}
-			else
-			{
-				HealthEntrys.Remove(Entry);
-				HealthEntrys.Sort(UHealthComponent::SortHealthTypePriority);
+				if (HealthEntrys[0].HealthType->bIsCritical)
+				{
+					OnDeathDelegate.Broadcast(FOnDeathInfo(GetOwner(), ModifyHealthInfo.CausedBy));
+					goto endloop; // I know it is generally frowned upon to use goto, but from my understanding, using it to break out of nested for loops is completely fine.
+				}
+				else
+				{
+					HealthEntrys.Remove(Entry);
+					HealthEntrys.Sort(UHealthComponent::SortHealthTypePriority);
+				}
 			}
 		}
 	}
+
+endloop:
 
 	OnHealthChangedDelegate.Broadcast(FHealthChangeResult());
 }

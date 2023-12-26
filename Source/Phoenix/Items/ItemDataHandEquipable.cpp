@@ -22,6 +22,7 @@ void UItemDataHandEquipable::OnEquip(AActor* EquippingActor)
 
 	FActorSpawnParameters Params;
 	Params.Owner = EquippingActor;
+	Params.Instigator = Cast<APawn>(EquippingActor);
 
 	if (AssociatedProp != nullptr)
 	{

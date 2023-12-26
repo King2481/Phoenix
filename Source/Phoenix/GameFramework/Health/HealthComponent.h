@@ -16,10 +16,10 @@ struct FHealthTypeEntry
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TObjectPtr<UHealthType> HealthType;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	int32 Amount;
 
 	FHealthTypeEntry()

@@ -27,6 +27,11 @@ struct FDamageInfo
 		DamageType = nullptr;
 	}
 
+	FDamageInfo(int32 InChangeAmount, TSubclassOf<UPhoenixDamageType> InDamageType)
+	{
+		ChangeAmount = InChangeAmount;
+		DamageType = InDamageType;
+	}
 };
 
 USTRUCT(BlueprintType)
@@ -41,18 +46,17 @@ struct FModifyHealthInfo
 	FGameplayTagContainer DamageTagContainer;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	TObjectPtr<UPhoenixAbilitySystemComponent> EffectedFrom;
+	TObjectPtr<UPhoenixAbilitySystemComponent> CausedBy;
 
 	FModifyHealthInfo()
 	{
 		DamageTagContainer = FGameplayTagContainer();
-		EffectedFrom = nullptr;
+		CausedBy = nullptr;
 	}
 
-	FModifyHealthInfo(const FGameplayTagContainer& InContainer)
+	void AddDamageSource(const FDamageInfo& InSource)
 	{
-		DamageTagContainer = InContainer;
-		EffectedFrom = nullptr;
+		DamageSources.Add(InSource);
 	}
 };
 
