@@ -27,5 +27,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile Base")
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Projectile Base")
+	int32 RemainingBounces;
+
 
 };

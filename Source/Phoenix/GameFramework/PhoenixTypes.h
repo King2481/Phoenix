@@ -143,8 +143,8 @@ struct FProjectileProperties
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (EditCondition = "bShouldBounce", EditConditionHides))
 	float Bounciness;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (EditCondition = "bShouldBounce", EditConditionHides))
-	uint8 MaxBounces;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (EditCondition = "bShouldBounce", EditConditionHides, ClampMin = "0", UIMin = "0"))
+	int32 MaxBounces;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	float GravityScale;
@@ -159,7 +159,6 @@ struct FProjectileProperties
 		bShouldBounce = false;
 		Bounciness = 0.4f;
 		MaxBounces = 1;
-
 		GravityScale = 0.0f;
 	}
 };

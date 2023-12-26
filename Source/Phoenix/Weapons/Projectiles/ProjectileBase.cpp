@@ -12,16 +12,15 @@ AProjectileBase::AProjectileBase()
 	PrimaryActorTick.bCanEverTick = false;
 	SetActorTickEnabled(false);
 	
-	SetLifeSpan(3.0f);
-
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
-	ProjectileMovement->bShouldBounce = false;
-	ProjectileMovement->ProjectileGravityScale = 0.0f;
+
+	RemainingBounces = 1;
 }
 
 void AProjectileBase::InitProjectile(const FProjectileProperties& ProjectileInfo)
 {
 	SetLifeSpan(ProjectileInfo.ProjectileLifeSpan);
+	RemainingBounces = ProjectileInfo.MaxBounces;
 
 	ProjectileMovement->InitialSpeed = ProjectileInfo.ProjectileSpeed;
 	ProjectileMovement->MaxSpeed = ProjectileInfo.ProjectileSpeed;

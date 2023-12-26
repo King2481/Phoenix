@@ -38,4 +38,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Bullet Firing Data")
 	float GetFriendlyRateOfFireForTimer() const { return 60.0f / RateOfFire; }
+
+#if WITH_EDITOR
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+#endif
+
 };

@@ -36,5 +36,8 @@ void AImpactProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 
 	}
 
-	Destroy();
+	if (--RemainingBounces <= 0)
+	{
+		Destroy();
+	}
 }

@@ -11,3 +11,17 @@ UBulletFiringData::UBulletFiringData()
 	RateOfFire = 750.0f;
 	MaxSpreadInDegrees = 0.0f;
 }
+
+#if WITH_EDITOR
+
+void UBulletFiringData::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+
+	if (!ProjectileProperties.bShouldBounce && ProjectileProperties.MaxBounces != 1)
+	{
+		ProjectileProperties.MaxBounces = 1; // Ensure MaxBounces is only 1 when bShouldBounce is false.
+	}
+}
+
+#endif
