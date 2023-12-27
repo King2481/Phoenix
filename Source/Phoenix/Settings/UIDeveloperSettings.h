@@ -7,6 +7,7 @@
 #include "UIDeveloperSettings.generated.h"
 
 class UMouseIconSet;
+class UFloatingTextEntity;
 
 /**
  * 
@@ -23,5 +24,8 @@ public:
 
 	UPROPERTY(Config, BlueprintReadOnly, EditAnywhere, Category = "Phoenix UI")
 	TSoftClassPtr<UUserWidget> DefaultDragWidget = nullptr;
+
+	UPROPERTY(Config, BlueprintReadOnly, EditAnywhere, Category = "Phoenix UI")
+	TSoftClassPtr<UFloatingTextEntity> DefaultFloatingTextWidget = nullptr;
 
 };

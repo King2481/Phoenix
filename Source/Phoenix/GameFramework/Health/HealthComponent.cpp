@@ -55,11 +55,16 @@ void UHealthComponent::RemoveHealthTypeEntry(const FHealthTypeEntry& HealthTypeT
 
 void UHealthComponent::OnHealthUpdatedEvent(const FModifyHealthInfo& ModifyHealthInfo)
 {
+	auto Result = FHealthChangeResult();
+
 	for (FHealthTypeEntry& Entry : HealthEntrys)
 	{
+		// TODO: Need to change the verbage to something more neutral than just damage.
 		for (FDamageInfo Damage : ModifyHealthInfo.DamageSources)
 		{
 			HealthEntrys[0].Amount -= Damage.ChangeAmount;
+
+			Result.DamageSources.Add(Damage);
 
 			if (HealthEntrys[0].Amount <= 0.0f)
 			{
@@ -79,5 +84,5 @@ void UHealthComponent::OnHealthUpdatedEvent(const FModifyHealthInfo& ModifyHealt
 
 endloop:
 
-	OnHealthChangedDelegate.Broadcast(FHealthChangeResult());
+	OnHealthChangedDelegate.Broadcast(Result);
 }

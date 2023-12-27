@@ -50,7 +50,7 @@ void AImpactProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 				TotalDamageFromSource += Calculation->CalculateDamage();
 			}
 
-			Info.AddDamageSource(FDamageInfo(TotalDamageFromSource, Damage.DamageType));
+			Info.AddDamageSource(FDamageInfo(TotalDamageFromSource, Damage.DamageType, GetActorLocation()));
 		}
 
 		ABS->ModifyHealth(Info);

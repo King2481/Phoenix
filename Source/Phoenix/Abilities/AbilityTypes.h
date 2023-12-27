@@ -21,16 +21,22 @@ struct FDamageInfo
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TSubclassOf<UPhoenixDamageType> DamageType;
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FVector HitLocation;
+
+
 	FDamageInfo()
 	{
 		ChangeAmount = 0;
 		DamageType = nullptr;
+		HitLocation = FVector::ZeroVector;
 	}
 
-	FDamageInfo(int32 InChangeAmount, TSubclassOf<UPhoenixDamageType> InDamageType)
+	FDamageInfo(int32 InChangeAmount, TSubclassOf<UPhoenixDamageType> InDamageType, const FVector& InHitLocation)
 	{
 		ChangeAmount = InChangeAmount;
 		DamageType = InDamageType;
+		HitLocation = InHitLocation;
 	}
 };
 

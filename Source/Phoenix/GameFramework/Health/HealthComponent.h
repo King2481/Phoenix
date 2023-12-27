@@ -45,6 +45,9 @@ struct FHealthChangeResult
 {
 	GENERATED_BODY()
 
+	UPROPERTY(BlueprintReadWrite)
+	TArray<FDamageInfo> DamageSources;
+
 	FHealthChangeResult()
 	{
 
