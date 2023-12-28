@@ -55,6 +55,7 @@ void UFloatingTextNotification::OnOwnersHealthChanged(const FHealthChangeResult&
 		{
 			for (FDamageInfo DamageInfo : NewInfo.DamageSources)
 			{
+				// TODO: Will need to release this widget when the animation is done
 				if (const auto Widget = FloatingTextWidgetPool.GetOrCreateInstance<UFloatingTextEntity>(UISettings->DefaultFloatingTextWidget.LoadSynchronous()))
 				{
 					FFloatingTextCreationInfo CreationInfo;
