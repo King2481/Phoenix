@@ -10,6 +10,7 @@ class UPhoenixDamageType;
 class UPhoenixAbilitySystemComponent;
 class UDamageCalculationTypeBase;
 class AProjectileBase;
+class UCameraShakeBase;
 
 UENUM(BlueprintType)
 enum class EDiceType : uint8
@@ -194,5 +195,27 @@ struct FProjectileSpawnInfo
 		ProjectileProperties = FProjectileProperties();
 		Owner = nullptr;
 		Instigator = nullptr;
+	}
+};
+
+USTRUCT(BlueprintType)
+struct FCameraShakeData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TSubclassOf<UCameraShakeBase> ExplosionCameraShakeClass;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	float ExplosionCameraShakeInnerRadius;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	float ExplosionCameraShakeOuterRadius;
+
+	FCameraShakeData()
+	{
+		ExplosionCameraShakeClass = nullptr;
+		ExplosionCameraShakeInnerRadius = 100.0f;
+		ExplosionCameraShakeOuterRadius = 1000.0f;
 	}
 };

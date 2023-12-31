@@ -7,11 +7,12 @@
 #include "PhoenixTypes.h"
 #include "PhoenixGameplayStatics.generated.h"
 
+class UExplosionData;
+
 USTRUCT(BlueprintType)
 struct FInteractionInfo
 {
 	GENERATED_BODY()
-
 
 	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<AActor> InstigatingActor;
@@ -50,5 +51,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta = (WorldContext = "WorldContextObject"), Category = "Phoenix Gameplay Statics")
 	static AProjectileBase* SpawnProjectile(const UObject* WorldContextObject, const FProjectileSpawnInfo& SpawnInfo);
+
+	UFUNCTION(BlueprintCallable, meta = (WorldContext = "WorldContextObject"), Category = "Phoenix Gameplay Statics")
+	static void Explode(const UObject* WorldContextObject, AActor* ExplodingActor, const FVector& Location, UExplosionData* ExplosionData);
 
 };
