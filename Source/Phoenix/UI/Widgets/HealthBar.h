@@ -49,4 +49,8 @@ protected:
 	UFUNCTION()
 	void OnTrackingHealthChanged(const FHealthChangeResult& NewInfo);
 
+private:
+
+	void UpdateHealthBar();
+
 };

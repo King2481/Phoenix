@@ -53,6 +53,19 @@ void UHealthComponent::RemoveHealthTypeEntry(const FHealthTypeEntry& HealthTypeT
 	}
 }
 
+float UHealthComponent::GetHealthRemainingAsRatio() const
+{
+	int32 AddedAmount = 0, AddedMaxAmount = 0;
+
+	for (const FHealthTypeEntry& Entry : HealthEntrys)
+	{
+		AddedAmount += Entry.Amount;
+		AddedMaxAmount += Entry.MaxAmount;
+	}
+
+	return float(AddedAmount) / float(AddedMaxAmount);
+}
+
 void UHealthComponent::OnHealthUpdatedEvent(const FModifyHealthInfo& ModifyHealthInfo)
 {
 	auto Result = FHealthChangeResult();
@@ -83,6 +96,9 @@ void UHealthComponent::OnHealthUpdatedEvent(const FModifyHealthInfo& ModifyHealt
 	}
 
 endloop:
+
+	Result.CurrentHealthPools.Append(GetHealthTypeEntries());
+	Result.HealthRemainingAsRatio = GetHealthRemainingAsRatio();
 
 	OnHealthChangedDelegate.Broadcast(Result);
 }

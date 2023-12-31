@@ -22,16 +22,21 @@ struct FHealthTypeEntry
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	int32 Amount;
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	int32 MaxAmount;
+
 	FHealthTypeEntry()
 	{
 		HealthType = nullptr;
 		Amount = 0;
+		MaxAmount = 0;
 	}
 
-	FHealthTypeEntry(UHealthType* InHealthType, const int32 InAmount)
+	FHealthTypeEntry(UHealthType* InHealthType, const int32 InAmount, const int32 InMaxAmount)
 	{
 		HealthType = InHealthType;
 		Amount = InAmount;
+		MaxAmount = InMaxAmount;
 	}
 
 	bool operator==(const FHealthTypeEntry& Other) const
@@ -45,12 +50,18 @@ struct FHealthChangeResult
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadOnly)
 	TArray<FDamageInfo> DamageSources;
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<FHealthTypeEntry> CurrentHealthPools;
+
+	UPROPERTY(BlueprintReadOnly)
+	float HealthRemainingAsRatio;
 
 	FHealthChangeResult()
 	{
-
+		HealthRemainingAsRatio = 0.0f;
 	}
 };
 
@@ -80,6 +91,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Health Component")
 	TArray<FHealthTypeEntry> GetHealthTypeEntries() const { return HealthEntrys; }
+
+	UFUNCTION(BlueprintPure, Category = "Health Component")
+	float GetHealthRemainingAsRatio() const;
 
 	UFUNCTION()
 	void OnHealthUpdatedEvent(const FModifyHealthInfo& ModifyHealthInfo);

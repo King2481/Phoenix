@@ -30,6 +30,8 @@ void UHealthBar::SetTrackingHealthComponent(UHealthComponent* NewTrackedHealth)
 	{
 		TrackedHealthComponent = NewTrackedHealth;
 		TrackedHealthComponent->OnHealthChangedDelegate.AddDynamic(this, &ThisClass::OnTrackingHealthChanged);
+
+		UpdateHealthBar();
 	}
 }
 
@@ -43,16 +45,31 @@ void UHealthBar::ClearTrackingBindings()
 
 void UHealthBar::OnTrackingHealthChanged(const FHealthChangeResult& NewInfo)
 {
-	if (HealthBar)
-	{	
-		/*float HealthAsRatio = NewInfo.CollectiveHealthPoolValueAsRatio;
-		HealthAsRatio = bInverselyFill ? 1.0f - HealthAsRatio : HealthAsRatio;
-		HealthBar->SetPercent(HealthAsRatio);*/
-	}
+	UpdateHealthBar();
+}
 
-	if (HealthText)
+void UHealthBar::UpdateHealthBar()
+{
+	if (TrackedHealthComponent)
 	{
-		// TODO: Sequence to account for multiple health pools.
-		// HealthText->SetText(FText::FromString(FString::FromInt(NewInfo.CollectiveHealthPoolValue)));
+		if (HealthBar)
+		{
+			float HealthAsRatio = TrackedHealthComponent->GetHealthRemainingAsRatio();
+			HealthAsRatio = bInverselyFill ? 1.0f - HealthAsRatio : HealthAsRatio;
+			HealthBar->SetPercent(HealthAsRatio);
+		}
+
+		if (HealthText)
+		{
+			int32 AccumulativeHealth = 0;
+
+			for (const FHealthTypeEntry& Entry : TrackedHealthComponent->GetHealthTypeEntries())
+			{
+				AccumulativeHealth += Entry.Amount;
+			}
+
+			// TODO: Sequence to account for multiple health pools.
+			HealthText->SetText(FText::FromString(FString::FromInt(AccumulativeHealth)));
+		}
 	}
 }
