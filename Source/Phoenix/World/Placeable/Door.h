@@ -54,6 +54,12 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Door")
 	void BlueprintTransitionToState(const EDoorState NewState);
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Door")
+	void BlueprintOnInteractedWith(AActor* InteractingActor);
+
+	UFUNCTION(BlueprintCallable, Category = "Door")
+	void OnInteractedWith(AActor* InteractingActor);
+
 protected:
 
 	// What is the state of this door?

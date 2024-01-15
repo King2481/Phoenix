@@ -20,6 +20,11 @@ void ADoor::TransitionToState(const EDoorState NewState)
 	BlueprintTransitionToState(DoorState);
 }
 
+void ADoor::OnInteractedWith(AActor* InteractingActor)
+{
+	BlueprintOnInteractedWith(InteractingActor);
+}
+
 FTargetableInfo ADoor::GetTargetInfo_Implementation() const
 {
 	return FTargetableInfo(HealthComponent, AbilitySystem, TargetingComponent, NameComponent->GetDisplayName());
