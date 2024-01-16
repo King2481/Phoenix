@@ -106,6 +106,9 @@ public:
 
 protected:
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Health Component")
+	TArray<FHealthTypeEntry> DefaultHealthEntrys;
+
 	UPROPERTY(BlueprintReadOnly, Category = "Health Component")
 	TArray<FHealthTypeEntry> HealthEntrys;
 

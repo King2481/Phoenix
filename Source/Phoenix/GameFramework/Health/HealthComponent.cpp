@@ -19,6 +19,11 @@ void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (DefaultHealthEntrys.Num() > 0)
+	{
+		HealthEntrys.Append(DefaultHealthEntrys);
+	}
+
 	if (const auto ABS = GetOwner()->GetComponentByClass<UPhoenixAbilitySystemComponent>())
 	{
 		ABS->ChangeHealthInfoDelegate.AddDynamic(this, &ThisClass::OnHealthUpdatedEvent);
