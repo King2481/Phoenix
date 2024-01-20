@@ -4,6 +4,7 @@
 #include "Phoenix/Weapons/Projectiles/ImpactProjectile.h"
 #include "Phoenix/Abilities/PhoenixAbilitySystemComponent.h"
 #include "Phoenix/GameFramework/Damage/DamageCalculationType.h"
+#include "Phoenix/FX/SurfaceReactionComponent.h"
 
 #include "Components/SphereComponent.h"
 
@@ -12,6 +13,8 @@ AImpactProjectile::AImpactProjectile()
 	CollisionComp = CreateOptionalDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
 	CollisionComp->SetGenerateOverlapEvents(false);
+
+	SurfaceReactionComponent = CreateOptionalDefaultSubobject<USurfaceReactionComponent>(TEXT("Surface Reaction"));
 
 	RootComponent = CollisionComp;
 }
@@ -55,6 +58,8 @@ void AImpactProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 
 		ABS->ModifyHealth(Info);
 	}
+
+	SurfaceReactionComponent->PlaySurfaceReactionFromHitResult(Hit);
 
 	if (--RemainingBounces <= 0)
 	{

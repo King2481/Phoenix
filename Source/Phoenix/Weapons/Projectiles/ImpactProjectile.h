@@ -7,6 +7,7 @@
 #include "ImpactProjectile.generated.h"
 
 class USphereComponent;
+class USurfaceReactionComponent;
 
 /**
  * 
@@ -27,7 +28,10 @@ protected:
 
 	/* Collision shape component */
 	UPROPERTY(VisibleDefaultsOnly, Category = "Impact Projectile")
-	USphereComponent* CollisionComp;
+	TObjectPtr<USphereComponent> CollisionComp;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Impact Projectile")
+	TObjectPtr<USurfaceReactionComponent> SurfaceReactionComponent;
 
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);

@@ -8,7 +8,7 @@ public class Phoenix : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "NavigationSystem", "AIModule", "GameplayTasks", "GameplayTags" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "NavigationSystem", "AIModule", "GameplayTasks", "GameplayTags", "PhysicsCore" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "UMG", "CommonUI", "CommonInput", "Niagara", "EnhancedInput" });
 
