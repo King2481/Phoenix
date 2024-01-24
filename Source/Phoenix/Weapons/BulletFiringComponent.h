@@ -18,6 +18,9 @@ struct FFireBulletQueueInfo
 	int32 AmountToFire;
 
 	UPROPERTY(BlueprintReadWrite)
+	int32 CritDie;
+
+	UPROPERTY(BlueprintReadWrite)
 	bool bRollToHit;
 
 	UPROPERTY(BlueprintReadWrite)
@@ -32,6 +35,7 @@ struct FFireBulletQueueInfo
 	FFireBulletQueueInfo()
 	{
 		AmountToFire = 1;
+		CritDie = 20;
 		bRollToHit = true;
 		BulletFiringData = nullptr;
 		Shooter = nullptr;

@@ -29,4 +29,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Ammo")
 	TObjectPtr<UStaticMesh> AmmoCasing;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Ammo", meta = (ClampMin = "0", ClampMax = "20", UIMin = "0", UIMax = "20"))
+	int32 CritDieBonus;
 };

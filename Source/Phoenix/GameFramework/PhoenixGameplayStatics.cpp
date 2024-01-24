@@ -93,7 +93,7 @@ void UPhoenixGameplayStatics::Explode(const UObject* WorldContextObject, AActor*
 							const int32 Damage = FMath::Lerp<int32>(ExplosionData->ExplosionInnerDamage, ExplosionData->ExplosionOuterDamage, DamageFalloff);
 
 							FModifyHealthInfo Info;
-							Info.AddDamageSource(FDamageInfo(Damage, ExplosionData->ExplosionDamageTypeClass, Hit.ImpactPoint));
+							Info.AddDamageSource(FDamageInfo(Damage, ExplosionData->ExplosionDamageTypeClass, Hit.ImpactPoint, false));
 							Info.CausedBy = ABS;
 
 							TargetABS->ModifyHealth(Info);

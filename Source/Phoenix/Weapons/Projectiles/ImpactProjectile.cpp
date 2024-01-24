@@ -47,13 +47,15 @@ void AImpactProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		for (FDamageCalculationInfo Damage : DamageCalculations)
 		{
 			int32 TotalDamageFromSource = 0;
+
+			const bool bWasCrit = FMath::RandRange(0, 20) >= CritDie;
 			
 			for (UDamageCalculationTypeBase* Calculation : Damage.DamageCalculationTypes)
 			{
 				TotalDamageFromSource += Calculation->CalculateDamage();
 			}
 
-			Info.AddDamageSource(FDamageInfo(TotalDamageFromSource, Damage.DamageType, GetActorLocation()));
+			Info.AddDamageSource(FDamageInfo(TotalDamageFromSource, Damage.DamageType, GetActorLocation(), bWasCrit));
 		}
 
 		ABS->ModifyHealth(Info);

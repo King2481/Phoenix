@@ -58,8 +58,11 @@ void UFloatingTextNotification::OnOwnersHealthChanged(const FHealthChangeResult&
 				// TODO: Will need to release this widget when the animation is done
 				if (const auto Widget = FloatingTextWidgetPool.GetOrCreateInstance<UFloatingTextEntity>(UISettings->DefaultFloatingTextWidget.LoadSynchronous()))
 				{
+					// In Final Fantasy 14, crits are denoated with a !.
+					// TODO: Actually properly format this instead of just adding a "!" at the end.
+
 					FFloatingTextCreationInfo CreationInfo;
-					CreationInfo.TextToDisplay = FText::FromString(FString::FromInt(DamageInfo.ChangeAmount));
+					CreationInfo.TextToDisplay = FText::FromString(FString::FromInt(DamageInfo.ChangeAmount) + (DamageInfo.bWasCrit ? "!" : ""));
 
 					UGameplayStatics::ProjectWorldToScreen(PC, DamageInfo.HitLocation, CreationInfo.RenderLocation, false);
 

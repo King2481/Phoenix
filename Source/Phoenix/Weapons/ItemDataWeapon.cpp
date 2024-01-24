@@ -6,6 +6,7 @@
 
 UItemDataWeapon::UItemDataWeapon()
 {
+	CritDie = 20;
 	MainHandAttackAbility = nullptr;
 }
 

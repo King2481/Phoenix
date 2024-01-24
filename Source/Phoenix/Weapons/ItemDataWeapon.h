@@ -27,6 +27,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Weapon")
 	TSubclassOf<UPhoenixGameplayAbility> MainHandAttackAbility;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Weapon", meta = (ClampMin = "1", ClampMax = "20", UIMin = "1", UIMax = "20"))
+	int32 CritDie;
+
 	virtual void OnEquip(AActor* EquippingActor) override;
 	virtual void OnUnequip(AActor* UnequippingActor) override;
 

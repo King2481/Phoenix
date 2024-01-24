@@ -52,6 +52,7 @@ void UBulletFiringComponent::FireBullet()
 			SpawnInfo.SpawnLocation = GetComponentLocation();
 			SpawnInfo.SpawnDirection = CalculateShotDirection();
 			SpawnInfo.ProjectileProperties = CurrentQueue.BulletFiringData->ProjectileProperties;
+			SpawnInfo.ProjectileProperties.CritDie = CurrentQueue.CritDie;
 			SpawnInfo.Owner = GetOwner();
 			SpawnInfo.Instigator = GetOwner()->GetInstigator();
 

@@ -153,6 +153,9 @@ struct FProjectileProperties
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TArray<FDamageCalculationInfo> DamageCalculations;
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	int32 CritDie;
+
 	FProjectileProperties()
 	{
 		ProjectileSpeed = 4500.0f;
@@ -161,6 +164,7 @@ struct FProjectileProperties
 		Bounciness = 0.4f;
 		MaxBounces = 1;
 		GravityScale = 0.0f;
+		CritDie = 20;
 	}
 };
 
@@ -187,6 +191,9 @@ struct FProjectileSpawnInfo
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TObjectPtr<APawn> Instigator;
 
+	UPROPERTY(BlueprintReadOnly)
+	int32 CritDie;
+
 	FProjectileSpawnInfo()
 	{
 		ProjectileToSpawn = nullptr;
@@ -195,6 +202,7 @@ struct FProjectileSpawnInfo
 		ProjectileProperties = FProjectileProperties();
 		Owner = nullptr;
 		Instigator = nullptr;
+		CritDie = 20;
 	}
 };
 

@@ -15,6 +15,7 @@ AProjectileBase::AProjectileBase()
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
 
 	RemainingBounces = 1;
+	CritDie = 20;
 }
 
 void AProjectileBase::InitProjectile(const FProjectileProperties& ProjectileInfo)
@@ -22,6 +23,7 @@ void AProjectileBase::InitProjectile(const FProjectileProperties& ProjectileInfo
 	SetLifeSpan(ProjectileInfo.ProjectileLifeSpan);
 	RemainingBounces = ProjectileInfo.MaxBounces;
 	DamageCalculations = ProjectileInfo.DamageCalculations;
+	CritDie = ProjectileInfo.CritDie;
 
 	ProjectileMovement->InitialSpeed = ProjectileInfo.ProjectileSpeed;
 	ProjectileMovement->MaxSpeed = ProjectileInfo.ProjectileSpeed;

@@ -24,19 +24,23 @@ struct FDamageInfo
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	FVector HitLocation;
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	bool bWasCrit;
 
 	FDamageInfo()
 	{
 		ChangeAmount = 0;
 		DamageType = nullptr;
 		HitLocation = FVector::ZeroVector;
+		bWasCrit = false;
 	}
 
-	FDamageInfo(int32 InChangeAmount, TSubclassOf<UPhoenixDamageType> InDamageType, const FVector& InHitLocation)
+	FDamageInfo(int32 InChangeAmount, TSubclassOf<UPhoenixDamageType> InDamageType, const FVector& InHitLocation, bool bInWasCrit)
 	{
 		ChangeAmount = InChangeAmount;
 		DamageType = InDamageType;
 		HitLocation = InHitLocation;
+		bWasCrit = bInWasCrit;
 	}
 };
 
@@ -49,14 +53,10 @@ struct FModifyHealthInfo
 	TArray<FDamageInfo> DamageSources;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	FGameplayTagContainer DamageTagContainer;
-
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TObjectPtr<UPhoenixAbilitySystemComponent> CausedBy;
 
 	FModifyHealthInfo()
 	{
-		DamageTagContainer = FGameplayTagContainer();
 		CausedBy = nullptr;
 	}
 

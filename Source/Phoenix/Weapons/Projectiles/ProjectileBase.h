@@ -31,6 +31,9 @@ protected:
 	int32 RemainingBounces;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Projectile Base")
+	int32 CritDie;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Projectile Base")
 	TArray<FDamageCalculationInfo> DamageCalculations;
 
 
