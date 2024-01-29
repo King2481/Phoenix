@@ -153,7 +153,7 @@ struct FProjectileProperties
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TArray<FDamageCalculationInfo> DamageCalculations;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly)
 	int32 CritDie;
 
 	FProjectileProperties()

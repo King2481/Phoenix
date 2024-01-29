@@ -2,6 +2,7 @@
 
 
 #include "Phoenix/Weapons/Ammo/AmmoComponent.h"
+#include "Phoenix/Weapons/Ammo/ItemDataAmmo.h"
 
 // Sets default values for this component's properties
 UAmmoComponent::UAmmoComponent()
@@ -28,4 +29,9 @@ void UAmmoComponent::OnRoundFired()
 int32 UAmmoComponent::GetActualAvailableAmmoFromRequestedAmmo(const int32 RequestedAmmo) const
 {
 	return FMath::Min<int32>(AmmoLeft, RequestedAmmo);
+}
+
+int32 UAmmoComponent::GetCritDieBonusFromLoadedAmmo() const
+{
+	return LoadedAmmo ? LoadedAmmo->CritDieBonus : 0;
 }

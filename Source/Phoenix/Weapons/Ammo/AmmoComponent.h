@@ -32,6 +32,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Ammo Component")
 	int32 GetActualAvailableAmmoFromRequestedAmmo(const int32 RequestedAmmo) const;
 
+	UFUNCTION(BlueprintPure, Category = "Ammo Component")
+	int32 GetCritDieBonusFromLoadedAmmo() const;
+
 protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Ammo Component")
