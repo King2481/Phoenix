@@ -45,6 +45,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Phoenix Gameplay Statics")
 	static int32 RollDice(const TArray<FDiceRollInfo>& InDiceRoll);
+
+	UFUNCTION(BlueprintCallable, Category = "Phoenix Gameplay Statics")
+	static bool RollDiceToBeat(const TArray<FDiceRollInfo>& InDiceRoll, const int32 NumberToBeat);
 	
 	UFUNCTION(BlueprintPure, Category = "Phoenix Gameplay Statics")
 	static int32 CalculateDamageRoll(const TArray<UDamageCalculationTypeBase*> Calculations);

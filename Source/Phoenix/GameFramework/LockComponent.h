@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "PhoenixTypes.h"
 #include "LockComponent.generated.h"
 
 class UItemDataBase;
@@ -60,7 +59,7 @@ protected:
 	ELockState LockState;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Lock Component")
-	FDifficultyClassInfo DifficultyClass;
+	uint8 DifficultyClass;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Lock Component")
 	TObjectPtr<UItemDataBase> RequiredItem;

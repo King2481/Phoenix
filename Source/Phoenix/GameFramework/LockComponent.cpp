@@ -14,7 +14,7 @@ ULockComponent::ULockComponent()
 	SetComponentTickEnabled(false);
 
 	LockState = ELockState::Unlocked;
-	DifficultyClass = FDifficultyClassInfo();
+	DifficultyClass = 0; // Default to 0 as we may want the ability to lock a door ourselves.
 	RequiredItem = nullptr;
 }
 

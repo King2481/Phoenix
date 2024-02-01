@@ -73,7 +73,7 @@ FVector UBulletFiringComponent::CalculateShotDirection()
 		FVector RandomOffset = FVector::ZeroVector;
 		
 		// Pass in through an initializer list, I didn't even know this existed!
-		if (UPhoenixGameplayStatics::RollDice({ FDiceRollInfo(EDiceType::D100) }) >= 50)
+		if (UPhoenixGameplayStatics::RollDiceToBeat({ FDiceRollInfo(EDiceType::D100) }, 50))
 		{
 			// If we missed a shot, pick a location outside the bounds of the character to shoot at.
 			RandomOffset = FVector(

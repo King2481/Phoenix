@@ -105,7 +105,7 @@ enum class ERollType : uint8
 };
 
 USTRUCT(BlueprintType)
-struct FDifficultyClassInfo
+struct FDiceRollScreenInfo
 {
 	GENERATED_BODY()
 
@@ -113,17 +113,12 @@ struct FDifficultyClassInfo
 	uint8 DifficultyClass;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	ERollType RollType;
+	bool bCanCancel;
 
-	FDifficultyClassInfo()
+	FDiceRollScreenInfo()
 	{
-		DifficultyClass = 0;
-		RollType = ERollType::Normal;
-	}
-
-	bool operator>=(const uint8 Other) const
-	{
-		return DifficultyClass >= Other;
+		DifficultyClass = 10;
+		bCanCancel = true;
 	}
 };
 

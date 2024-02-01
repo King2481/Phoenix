@@ -8,6 +8,7 @@
 
 class UMouseIconSet;
 class UFloatingTextEntity;
+class UDiceRollScreen;
 
 /**
  * 
@@ -27,5 +28,8 @@ public:
 
 	UPROPERTY(Config, BlueprintReadOnly, EditAnywhere, Category = "Phoenix UI")
 	TSoftClassPtr<UFloatingTextEntity> DefaultFloatingTextWidget = nullptr;
+
+	UPROPERTY(Config, BlueprintReadOnly, EditAnywhere, Category = "Phoenix UI")
+	TSoftClassPtr<UDiceRollScreen> DefaultDiceRollScreen = nullptr;
 
 };
