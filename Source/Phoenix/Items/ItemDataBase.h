@@ -50,4 +50,10 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Base")
 	TObjectPtr<UTexture2D> InventoryItemTexture;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Base")
+	bool bPickpocketable;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Base", meta = (EditCondition = "bPickpocketable", EditConditionHides))
+	uint8 PickpocketDifficultyClass;
 };

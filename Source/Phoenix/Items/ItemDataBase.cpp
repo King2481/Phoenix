@@ -12,4 +12,6 @@ UItemDataBase::UItemDataBase()
 	ItemCategory = nullptr;
 	ItemQuality = nullptr;
 	InventoryItemTexture = nullptr;
+	bPickpocketable = true;
+	PickpocketDifficultyClass = 8;
 }
