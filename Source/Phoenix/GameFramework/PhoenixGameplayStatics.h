@@ -33,6 +33,30 @@ struct FInteractionInfo
 	}
 };
 
+USTRUCT(BlueprintType)
+struct FDiceRollToBeatResult
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bSuccessfullyPassed;
+
+	UPROPERTY(BlueprintReadOnly)
+	int32 AmountRolled;
+
+	FDiceRollToBeatResult()
+	{
+		bSuccessfullyPassed = false;
+		AmountRolled = 0;
+	}
+
+	FDiceRollToBeatResult(bool bInSuccessfullyPassed, int32 InAmountRolled)
+	{
+		bSuccessfullyPassed = bInSuccessfullyPassed;
+		AmountRolled = InAmountRolled;
+	}
+};
+
 /**
  * 
  */
@@ -47,7 +71,7 @@ public:
 	static int32 RollDice(const TArray<FDiceRollInfo>& InDiceRoll);
 
 	UFUNCTION(BlueprintCallable, Category = "Phoenix Gameplay Statics")
-	static bool RollDiceToBeat(const TArray<FDiceRollInfo>& InDiceRoll, const int32 NumberToBeat);
+	static FDiceRollToBeatResult RollDiceToBeat(const TArray<FDiceRollInfo>& InDiceRoll, const int32 NumberToBeat);
 	
 	UFUNCTION(BlueprintPure, Category = "Phoenix Gameplay Statics")
 	static int32 CalculateDamageRoll(const TArray<UDamageCalculationTypeBase*> Calculations);

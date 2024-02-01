@@ -51,7 +51,7 @@ protected:
 	TObjectPtr<UTextBlock> DifficultyClassToBeatText;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Dice Roll Screen", meta = (BindWidget))
-	TObjectPtr<UTextBlock> ResultText;
+	TObjectPtr<UTextBlock> DiceRollResultText;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Dice Roll Screen")
 	uint8 DifficultyClass;

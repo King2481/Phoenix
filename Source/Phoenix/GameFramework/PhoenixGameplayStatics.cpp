@@ -31,9 +31,11 @@ int32 UPhoenixGameplayStatics::RollDice(const TArray<FDiceRollInfo>& InDiceRoll)
 	return Result;
 }
 
-bool UPhoenixGameplayStatics::RollDiceToBeat(const TArray<FDiceRollInfo>& InDiceRoll, const int32 NumberToBeat)
+FDiceRollToBeatResult UPhoenixGameplayStatics::RollDiceToBeat(const TArray<FDiceRollInfo>& InDiceRoll, const int32 NumberToBeat)
 {
-	return RollDice(InDiceRoll) >= NumberToBeat;
+	const int32 AmountRolled = RollDice(InDiceRoll);
+
+	return FDiceRollToBeatResult(AmountRolled >= NumberToBeat, AmountRolled);
 }
 
 int32 UPhoenixGameplayStatics::CalculateDamageRoll(const TArray<UDamageCalculationTypeBase*> Calculations)

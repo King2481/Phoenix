@@ -18,7 +18,7 @@ UDiceRollScreen::UDiceRollScreen()
 	CancelButton = nullptr;
 	ContinueButton = nullptr;
 	DifficultyClassToBeatText = nullptr;
-	ResultText = nullptr;
+	DiceRollResultText = nullptr;
 
 	DifficultyClass = 20;
 }
@@ -92,11 +92,16 @@ void UDiceRollScreen::OnRollDiceClicked()
 
 	// Actual dice rolling
 	{
-		const bool bResult = UPhoenixGameplayStatics::RollDiceToBeat({ FDiceRollInfo(EDiceType::D20) }, DifficultyClass);
+		const FDiceRollToBeatResult Result = UPhoenixGameplayStatics::RollDiceToBeat({ FDiceRollInfo(EDiceType::D20) }, DifficultyClass);
 
-		BlueprintDiceRollResult(bResult);
+		if (DiceRollResultText)
+		{
+			DiceRollResultText->SetText(FText::FromString(FString::FromInt(Result.AmountRolled)));
+		}
 
-		OnDiceRollResult.Broadcast(bResult);
+		BlueprintDiceRollResult(Result.bSuccessfullyPassed);
+
+		OnDiceRollResult.Broadcast(Result.bSuccessfullyPassed);
 	}
 }
 
