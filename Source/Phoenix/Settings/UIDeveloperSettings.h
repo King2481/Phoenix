@@ -9,6 +9,7 @@
 class UMouseIconSet;
 class UFloatingTextEntity;
 class UDiceRollScreen;
+class UPickpocketScreen;
 
 /**
  * 
@@ -31,5 +32,8 @@ public:
 
 	UPROPERTY(Config, BlueprintReadOnly, EditAnywhere, Category = "Phoenix UI")
 	TSoftClassPtr<UDiceRollScreen> DefaultDiceRollScreen = nullptr;
+
+	UPROPERTY(Config, BlueprintReadOnly, EditAnywhere, Category = "Phoenix UI")
+	TSoftClassPtr<UPickpocketScreen> DefaultPickpocketScreen = nullptr;
 
 };
