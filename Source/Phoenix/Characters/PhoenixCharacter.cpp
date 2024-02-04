@@ -23,7 +23,7 @@ APhoenixCharacter::APhoenixCharacter()
 	NameComponent = CreateDefaultSubobject<UNameComponent>(TEXT("NameComponent"));
 	TargetingComponent = CreateDefaultSubobject<UTargetingComponent>(TEXT("TargetingComponent"));
 	ReputationComponent = CreateDefaultSubobject<UReputationComponent>(TEXT("ReputationComponent"));
-	FloatingTextNotification = CreateDefaultSubobject<UFloatingTextNotification>(TEXT("FloatingTextNotification"));
+	CombatFloatyNotification = CreateDefaultSubobject<UCombatFloatyNotification>(TEXT("CombatFloatyNotification"));
 
 	SneakAbility = nullptr;
 }

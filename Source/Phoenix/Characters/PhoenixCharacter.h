@@ -16,7 +16,7 @@ class UHealthComponent;
 class UNameComponent;
 class UTargetingComponent;
 class UReputationComponent;
-class UFloatingTextNotification;
+class UCombatFloatyNotification;
 
 UCLASS()
 class PHOENIX_API APhoenixCharacter : public ACharacter, public ITargetable, public IEquipable
@@ -53,7 +53,7 @@ protected:
 	TObjectPtr<UReputationComponent> ReputationComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Phoenix Character")
-	TObjectPtr<UFloatingTextNotification> FloatingTextNotification;
+	TObjectPtr<UCombatFloatyNotification> CombatFloatyNotification;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Phoenix Character")
 	TSubclassOf<UPhoenixGameplayAbility> SneakAbility;

@@ -5,19 +5,19 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Blueprint/UserWidgetPool.h"
-#include "FloatingTextNotification.generated.h"
+#include "CombatFloatyNotification.generated.h"
 
 struct FHealthChangeInfo;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class PHOENIX_API UFloatingTextNotification : public UActorComponent
+class PHOENIX_API UCombatFloatyNotification : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 
 	// Sets default values for this component's properties
-	UFloatingTextNotification();
+	UCombatFloatyNotification();
 
 protected:
 
@@ -31,6 +31,6 @@ protected:
 	void OnOwnersHealthChanged(const FHealthChangeResult& NewInfo);
 
 	UPROPERTY()
-	FUserWidgetPool FloatingTextWidgetPool;
+	FUserWidgetPool CombatFloatyWidgetPool;
 
 };

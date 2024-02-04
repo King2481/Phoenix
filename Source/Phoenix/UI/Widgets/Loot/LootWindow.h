@@ -10,7 +10,7 @@ struct FLootInfo;
 struct FInventoryItem;
 class UItemDataBase;
 class UItemDisplayPanel;
-class UInvetoryComponent;
+class UInventoryComponent;
 class UButton;
 
 /**

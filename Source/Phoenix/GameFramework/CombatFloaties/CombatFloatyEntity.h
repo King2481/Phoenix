@@ -4,12 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "FloatingTextEntity.generated.h"
+#include "CombatFloatyEntity.generated.h"
 
 class UTextBlock;
 
 USTRUCT()
-struct FFloatingTextCreationInfo
+struct FCombatFloatyCreationInfo
 {
 	GENERATED_BODY()
 
@@ -19,7 +19,7 @@ struct FFloatingTextCreationInfo
 	UPROPERTY()
 	FVector2D RenderLocation;
 
-	FFloatingTextCreationInfo()
+	FCombatFloatyCreationInfo()
 	{
 		TextToDisplay = FText::GetEmpty();
 		RenderLocation = FVector2D::ZeroVector;
@@ -30,19 +30,19 @@ struct FFloatingTextCreationInfo
  * 
  */
 UCLASS()
-class PHOENIX_API UFloatingTextEntity : public UUserWidget
+class PHOENIX_API UCombatFloatyEntity : public UUserWidget
 {
 	GENERATED_BODY()
 
 public:
 
-	UFloatingTextEntity(const FObjectInitializer& ObjectInitializer);
+	UCombatFloatyEntity(const FObjectInitializer& ObjectInitializer);
 
-	void SetFloatingTextInfo(const FFloatingTextCreationInfo& InInfo);
+	void SetCombatFloatyInfo(const FCombatFloatyCreationInfo& InInfo);
 
 protected:
 
-	UPROPERTY(BlueprintReadOnly, Category = "Floating Text Entity", meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, Category = "Combat Floaty Entity", meta = (BindWidget))
 	TObjectPtr<UTextBlock> FlyingText;
 	
 };

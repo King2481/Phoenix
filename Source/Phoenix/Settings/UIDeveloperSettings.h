@@ -7,7 +7,7 @@
 #include "UIDeveloperSettings.generated.h"
 
 class UMouseIconSet;
-class UFloatingTextEntity;
+class UCombatFloatyEntity;
 class UDiceRollScreen;
 class UPickpocketScreen;
 
@@ -28,7 +28,7 @@ public:
 	TSoftClassPtr<UUserWidget> DefaultDragWidget = nullptr;
 
 	UPROPERTY(Config, BlueprintReadOnly, EditAnywhere, Category = "Phoenix UI")
-	TSoftClassPtr<UFloatingTextEntity> DefaultFloatingTextWidget = nullptr;
+	TSoftClassPtr<UCombatFloatyEntity> DefaultFloatingTextWidget = nullptr;
 
 	UPROPERTY(Config, BlueprintReadOnly, EditAnywhere, Category = "Phoenix UI")
 	TSoftClassPtr<UDiceRollScreen> DefaultDiceRollScreen = nullptr;

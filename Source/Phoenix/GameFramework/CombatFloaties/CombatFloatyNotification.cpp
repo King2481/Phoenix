@@ -1,31 +1,31 @@
 // Created by Bruce Crum.
 
 
-#include "Phoenix/GameFramework/FloatingText/FloatingTextNotification.h"
-#include "Phoenix/GameFramework/FloatingText/FloatingTextEntity.h"
+#include "Phoenix/GameFramework/CombatFloaties/CombatFloatyNotification.h"
+#include "Phoenix/GameFramework/CombatFloaties/CombatFloatyEntity.h"
 #include "Phoenix/GameFramework/Health/HealthComponent.h"
 #include "Phoenix/Settings/UIDeveloperSettings.h"
 
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
-UFloatingTextNotification::UFloatingTextNotification()
+UCombatFloatyNotification::UCombatFloatyNotification()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
 	SetComponentTickEnabled(false);
 
-	FloatingTextWidgetPool = FUserWidgetPool();
+	CombatFloatyWidgetPool = FUserWidgetPool();
 }
 
 
 // Called when the game starts
-void UFloatingTextNotification::BeginPlay()
+void UCombatFloatyNotification::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FloatingTextWidgetPool.SetWorld(GetWorld());
+	CombatFloatyWidgetPool.SetWorld(GetWorld());
 
 	if (const auto HealthComponent = GetOwner()->GetComponentByClass<UHealthComponent>())
 	{
@@ -33,9 +33,9 @@ void UFloatingTextNotification::BeginPlay()
 	}
 }
 
-void UFloatingTextNotification::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void UCombatFloatyNotification::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	FloatingTextWidgetPool.ReleaseAll(true);
+	CombatFloatyWidgetPool.ReleaseAll(true);
 
 	if (const auto HealthComponent = GetOwner()->GetComponentByClass<UHealthComponent>())
 	{
@@ -45,10 +45,8 @@ void UFloatingTextNotification::EndPlay(const EEndPlayReason::Type EndPlayReason
 	Super::EndPlay(EndPlayReason);
 }
 
-void UFloatingTextNotification::OnOwnersHealthChanged(const FHealthChangeResult& NewInfo)
+void UCombatFloatyNotification::OnOwnersHealthChanged(const FHealthChangeResult& NewInfo)
 {
-	// TODO: This will need the be refactored as there may be things besides health changes that have floating text. But for the time being, this is fine.
-
 	if (const auto UISettings = GetDefault<UUIDeveloperSettings>()) // Access via CDO
 	{
 		if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
@@ -56,21 +54,24 @@ void UFloatingTextNotification::OnOwnersHealthChanged(const FHealthChangeResult&
 			for (FDamageInfo DamageInfo : NewInfo.DamageSources)
 			{
 				// TODO: Will need to release this widget when the animation is done
-				if (const auto Widget = FloatingTextWidgetPool.GetOrCreateInstance<UFloatingTextEntity>(UISettings->DefaultFloatingTextWidget.LoadSynchronous()))
-				{
-					// In Final Fantasy 14, crits are denoated with a !.
-					// TODO: Actually properly format this instead of just adding a "!" at the end.
+				if (const auto Widget = CombatFloatyWidgetPool.GetOrCreateInstance<UCombatFloatyEntity>(UISettings->DefaultFloatingTextWidget.LoadSynchronous()))
+				{					
+					FString FormatedString = FString::FromInt(DamageInfo.ChangeAmount);
+					if (DamageInfo.bWasCrit)
+					{
+						// In Final Fantasy 14, crits are denoted with a !.
+						FormatedString += FString("!");
+					}
 
-					FFloatingTextCreationInfo CreationInfo;
-					CreationInfo.TextToDisplay = FText::FromString(FString::FromInt(DamageInfo.ChangeAmount) + (DamageInfo.bWasCrit ? "!" : ""));
+					FCombatFloatyCreationInfo CreationInfo;
+					CreationInfo.TextToDisplay = FText::FromString(FormatedString);
 
 					UGameplayStatics::ProjectWorldToScreen(PC, DamageInfo.HitLocation, CreationInfo.RenderLocation, false);
 
-					Widget->SetFloatingTextInfo(CreationInfo);
+					Widget->SetCombatFloatyInfo(CreationInfo);
 				}
 			}
 		}
 	}
 }
-
 
