@@ -17,5 +17,7 @@ class PHOENIX_API APhoenixWorldSettings : public AWorldSettings
 public:
 
 	APhoenixWorldSettings();
+
+
 	
 };

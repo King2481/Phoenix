@@ -30,6 +30,12 @@ public:
 	
 protected:
 
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Player Camera Manager")
+	TObjectPtr<AActor> FluidSimActorInstance;
+
 	UPROPERTY(BlueprintReadOnly, Category = "Player Camera Manager")
 	float CurrentZoomValue;
 

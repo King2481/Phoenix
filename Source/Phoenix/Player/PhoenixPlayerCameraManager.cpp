@@ -2,6 +2,7 @@
 
 
 #include "Phoenix/Player/PhoenixPlayerCameraManager.h"
+#include "Phoenix/Settings/WorldDeveloperSettings.h"
 
 APhoenixPlayerCameraManager::APhoenixPlayerCameraManager()
 {
@@ -20,6 +21,39 @@ APhoenixPlayerCameraManager::APhoenixPlayerCameraManager()
 	LocationInterpSpeed = 5.0f;
 	RotationInterpSpeed = 2.5f;
 	BoundsBox = FBox();
+
+	FluidSimActorInstance = nullptr;
+}
+
+void APhoenixPlayerCameraManager::BeginPlay()
+{
+	Super::BeginPlay();
+
+	// Since fluid sim's "bFollowPlayer" actually follows the camera, the PlayerCameraManager should spawn it.
+	if (UWorld* World = GetWorld())
+	{
+		if (const auto WorldSettings = GetDefault<UWorldDeveloperSettings>()) // Access via CDO
+		{
+			if (WorldSettings->FluidSimulationClass.IsValid())
+			{
+				if (const auto SpawnedFluidSimActor = World->SpawnActor<AActor>(WorldSettings->FluidSimulationClass.LoadSynchronous(), FTransform::Identity, FActorSpawnParameters()))
+				{
+					FluidSimActorInstance = SpawnedFluidSimActor;
+				}
+			}
+		}
+	}
+}
+
+void APhoenixPlayerCameraManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	if (FluidSimActorInstance)
+	{
+		FluidSimActorInstance->Destroy();
+		FluidSimActorInstance = nullptr;
+	}
+
+	Super::EndPlay(EndPlayReason);
 }
 
 void APhoenixPlayerCameraManager::UpdateViewTargetInternal(FTViewTarget& OutVT, float DeltaTime)

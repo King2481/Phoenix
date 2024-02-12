@@ -78,13 +78,6 @@ void APhoenixCharacter::OnDeathEvent(const FOnDeathInfo& DeathInfo)
 void APhoenixCharacter::OnDeath()
 {
 	// DetachFromControllerPendingDestroy();
-
-	// Only set the life span if they have nothing to loot.
-	if (InventoryComponent->GetInventoryItems().IsEmpty())
-	{
-		SetLifeSpan(60.0f);
-	}
-
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionProfileName("Ragdoll");
 	GetMesh()->SetSimulatePhysics(true);
