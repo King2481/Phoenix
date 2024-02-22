@@ -35,7 +35,7 @@ public:
 	bool bStackable;
 
 	// What is the maximum amount of this item that is allowed?
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Base", meta = (EditCondition = "bStackable", EditConditionHides))
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Base", meta = (EditCondition = "bStackable", EditConditionHides, UIMin = "2", ClampMin = "2"))
 	int32 MaximumAmount;
 
 	// What category of item is this?
