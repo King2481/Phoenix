@@ -17,4 +17,12 @@ void UCombatFloatyEntity::SetCombatFloatyInfo(const FCombatFloatyCreationInfo& I
 	SetPositionInViewport(InInfo.RenderLocation, true);
 
 	AddToViewport();
+	BlueprintOnSpawned();
+}
+
+void UCombatFloatyEntity::OnAnimationFinished_Implementation(const UWidgetAnimation* Animation)
+{
+	Super::OnAnimationFinished_Implementation(Animation);
+
+	OnCombatFloatyAnimationFinishedDelegate.Broadcast(this);
 }

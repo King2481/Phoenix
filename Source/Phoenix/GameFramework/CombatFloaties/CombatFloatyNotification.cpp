@@ -53,7 +53,6 @@ void UCombatFloatyNotification::OnOwnersHealthChanged(const FHealthChangeResult&
 		{
 			for (FDamageInfo DamageInfo : NewInfo.DamageSources)
 			{
-				// TODO: Will need to release this widget when the animation is done
 				if (const auto Widget = CombatFloatyWidgetPool.GetOrCreateInstance<UCombatFloatyEntity>(UISettings->DefaultFloatingTextWidget.LoadSynchronous()))
 				{					
 					FString FormatedString = FString::FromInt(DamageInfo.ChangeAmount);
@@ -68,10 +67,20 @@ void UCombatFloatyNotification::OnOwnersHealthChanged(const FHealthChangeResult&
 
 					UGameplayStatics::ProjectWorldToScreen(PC, DamageInfo.HitLocation, CreationInfo.RenderLocation, false);
 
+					Widget->OnCombatFloatyAnimationFinishedDelegate.AddDynamic(this, &ThisClass::OnCombatFloatyAnimationFinished);
 					Widget->SetCombatFloatyInfo(CreationInfo);
 				}
 			}
 		}
+	}
+}
+
+void UCombatFloatyNotification::OnCombatFloatyAnimationFinished(UCombatFloatyEntity* Widget)
+{
+	if (Widget)
+	{
+		Widget->OnCombatFloatyAnimationFinishedDelegate.RemoveDynamic(this, &ThisClass::OnCombatFloatyAnimationFinished);
+		CombatFloatyWidgetPool.Release(Widget);
 	}
 }
 

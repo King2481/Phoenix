@@ -8,6 +8,7 @@
 #include "CombatFloatyNotification.generated.h"
 
 struct FHealthChangeInfo;
+class UCombatFloatyEntity;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PHOENIX_API UCombatFloatyNotification : public UActorComponent
@@ -32,5 +33,8 @@ protected:
 
 	UPROPERTY()
 	FUserWidgetPool CombatFloatyWidgetPool;
+
+	UFUNCTION()
+	void OnCombatFloatyAnimationFinished(UCombatFloatyEntity* Widget);
 
 };

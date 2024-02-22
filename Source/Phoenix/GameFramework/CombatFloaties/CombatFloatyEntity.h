@@ -8,6 +8,9 @@
 
 class UTextBlock;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCombatFloatyAnimationFinishedDelegate, UCombatFloatyEntity*, Widget);
+
+
 USTRUCT()
 struct FCombatFloatyCreationInfo
 {
@@ -40,9 +43,17 @@ public:
 
 	void SetCombatFloatyInfo(const FCombatFloatyCreationInfo& InInfo);
 
+	UPROPERTY(BlueprintAssignable)
+	FOnCombatFloatyAnimationFinishedDelegate OnCombatFloatyAnimationFinishedDelegate;
+
 protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Combat Floaty Entity", meta = (BindWidget))
 	TObjectPtr<UTextBlock> FlyingText;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Combat Floaty Entity")
+	void BlueprintOnSpawned();
+
+	virtual void OnAnimationFinished_Implementation(const UWidgetAnimation* Animation) override;
 	
 };
