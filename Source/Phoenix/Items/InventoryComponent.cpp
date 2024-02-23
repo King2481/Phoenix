@@ -35,7 +35,7 @@ int32 UInventoryComponent::HasItem(const UItemDataBase* ItemToFind)
 {
 	int32 Amount = 0;
 
-	for (FInventoryItem& InventoryItem : InventoryItems)
+	for (const FInventoryItem& InventoryItem : InventoryItems)
 	{
 		if (InventoryItem.Item == ItemToFind)
 		{
