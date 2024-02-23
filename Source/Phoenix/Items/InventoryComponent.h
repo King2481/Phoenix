@@ -20,28 +20,28 @@ public:
 	UInventoryComponent();
 
 	// Checks to see if we actually have the specifed item and returns the amount of that item we have.
-	UFUNCTION(BlueprintPure, Category = "Iventory Component")
+	UFUNCTION(BlueprintPure, Category = "Inventory Component")
 	int32 HasItem(const UItemDataBase* ItemToFind);
 
 	// Adds an item to our inventory
-	UFUNCTION(BlueprintCallable, Category = "Iventory Component")
+	UFUNCTION(BlueprintCallable, Category = "Inventory Component")
 	void AddItem(UItemDataBase* ItemToAdd, const int32 Amount = 1);
 
-	UFUNCTION(BlueprintCallable, Category = "Iventory Component")
+	UFUNCTION(BlueprintCallable, Category = "Inventory Component")
 	void AddItemFromItemStruct(const FInventoryItem& InInventoryItem);
 
 	// Removes an item from our inventory.
-	UFUNCTION(BlueprintCallable, Category = "Iventory Component")
+	UFUNCTION(BlueprintCallable, Category = "Inventory Component")
 	bool TransferItemBetweenInventories(const FInventoryItem& InInventoryItem, UInventoryComponent* From);
 
-	UFUNCTION(BlueprintCallable, Category = "Iventory Component")
+	UFUNCTION(BlueprintCallable, Category = "Inventory Component")
 	void AttemptToTransferAllItemBetweenInventories(UInventoryComponent* From);
 
-	UFUNCTION(BlueprintCallable, Category = "Iventory Component")
+	UFUNCTION(BlueprintCallable, Category = "Inventory Component")
 	bool RemoveItem(UItemDataBase* ItemToRemove, const int32 Amount = 1);
 
 	// Returns the inventory items this component has.
-	UFUNCTION(BlueprintPure, Category = "Iventory Component")
+	UFUNCTION(BlueprintPure, Category = "Inventory Component")
 	TArray<FInventoryItem> GetInventoryItems() const { return InventoryItems; }
 
 	UPROPERTY(BlueprintAssignable)
@@ -56,7 +56,7 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	// A list of all our inventory items.
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Iventory Component")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Inventory Component")
 	TArray<FInventoryItem> InventoryItems;
 		
 };
