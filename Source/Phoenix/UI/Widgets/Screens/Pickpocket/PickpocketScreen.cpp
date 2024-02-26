@@ -2,9 +2,11 @@
 
 
 #include "Phoenix/UI/Widgets/Screens/Pickpocket/PickpocketScreen.h"
+#include "Phoenix/UI/Widgets/Items/ItemDisplayPanel.h"
 #include "Phoenix/GameFramework/PhoenixGameplayStatics.h"
 #include "Phoenix/Player/PhoenixPlayerController.h"
 #include "Phoenix/Items/ItemDataBase.h"
+#include "Phoenix/Items/InventoryComponent.h"
 
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
@@ -70,6 +72,17 @@ void UPickpocketScreen::NativeOnDeactivated()
 void UPickpocketScreen::InitScreen(UInventoryComponent* InInventory)
 {
 	Inventory = InInventory;
+
+	if (ItemDisplayPanel)
+	{
+		for (const FInventoryItem& Item : Inventory->GetInventoryItems())
+		{
+			if (Item.Item->bPickpocketable)
+			{
+				ItemDisplayPanel->AddItemSingle(Item);
+			}
+		}
+	}
 }
 
 void UPickpocketScreen::OnStealButtonPressed()
@@ -84,7 +97,7 @@ void UPickpocketScreen::OnStealButtonPressed()
 		}
 		else
 		{
-			if (true)
+			if (UPhoenixGameplayStatics::RollDiceToBeat({ FDiceRollInfo(EDiceType::D20) }, SelectedItem->PickpocketCaughtSaveDifficultyClass).bSuccessfullyPassed)
 			{
 				// Failed
 			}

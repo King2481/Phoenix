@@ -14,4 +14,5 @@ UItemDataBase::UItemDataBase()
 	InventoryItemTexture = nullptr;
 	bPickpocketable = true;
 	PickpocketDifficultyClass = 8;
+	PickpocketCaughtSaveDifficultyClass = 10;
 }

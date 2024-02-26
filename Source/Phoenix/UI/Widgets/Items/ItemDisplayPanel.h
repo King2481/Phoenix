@@ -23,7 +23,13 @@ public:
 	UItemDisplayPanel(const FObjectInitializer& ObjectInitializer);
 
 	UFUNCTION(BlueprintCallable, Category = "Item Display Panel")
-	void RefreshItems(UInventoryComponent* InInventory);
+	void AddAllItemsFromInventory(UInventoryComponent* InInventory);
+
+	UFUNCTION(BlueprintCallable, Category = "Item Display Panel")
+	void AddItemSingle(const FInventoryItem& NewItem);
+
+	UFUNCTION(BlueprintCallable, Category = "Item Display Panel")
+	void RemoveItemSingle(UObject* ItemToRemove);
 
 	void ClearListItems();
 

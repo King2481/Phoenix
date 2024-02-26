@@ -77,7 +77,7 @@ void ULootWindow::DisplayWindowAtLocation(const FLootInfo& NewInfo)
 
 	if (DisplayPanel)
 	{
-		DisplayPanel->RefreshItems(NewInfo.Inventory);
+		DisplayPanel->AddAllItemsFromInventory(NewInfo.Inventory);
 	}
 }
 

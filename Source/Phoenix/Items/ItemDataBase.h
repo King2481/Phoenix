@@ -56,4 +56,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Base", meta = (EditCondition = "bPickpocketable", EditConditionHides))
 	uint8 PickpocketDifficultyClass;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Item Data Base", meta = (EditCondition = "bPickpocketable", EditConditionHides))
+	uint8 PickpocketCaughtSaveDifficultyClass;
 };

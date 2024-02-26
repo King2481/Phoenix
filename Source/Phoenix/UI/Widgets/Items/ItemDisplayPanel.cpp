@@ -13,7 +13,7 @@ UItemDisplayPanel::UItemDisplayPanel(const FObjectInitializer& ObjectInitializer
     TileView = nullptr;
 }
 
-void UItemDisplayPanel::RefreshItems(UInventoryComponent* InInventory)
+void UItemDisplayPanel::AddAllItemsFromInventory(UInventoryComponent* InInventory)
 {
     if (TileView)
     {
@@ -21,12 +21,28 @@ void UItemDisplayPanel::RefreshItems(UInventoryComponent* InInventory)
         
         for (const FInventoryItem& Item : InInventory->GetInventoryItems())
         {
-            if (const auto ListEntryObject = NewObject<UItemEntryObject>())
-            {
-                ListEntryObject->StoredItem = Item;
-                TileView->AddItem(ListEntryObject);
-            }
+            AddItemSingle(Item);
         }
+    }
+}
+
+void UItemDisplayPanel::AddItemSingle(const FInventoryItem& NewItem)
+{
+    if (TileView)
+    {
+        if (const auto ListEntryObject = NewObject<UItemEntryObject>())
+        {
+            ListEntryObject->StoredItem = NewItem;
+            TileView->AddItem(ListEntryObject);
+        }
+    }
+}
+
+void UItemDisplayPanel::RemoveItemSingle(UObject* ItemToRemove)
+{
+    if (TileView)
+    {
+        TileView->RemoveItem(ItemToRemove);
     }
 }
 
