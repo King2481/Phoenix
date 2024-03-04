@@ -9,4 +9,5 @@ UHealthType::UHealthType()
 	MaxValue = 300;
 	bIsCritical = false;
 	bAbsorbsLeftoverDamageOnDepletion = false;
+	TextColor = FString("");
 }

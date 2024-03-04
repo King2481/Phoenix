@@ -5,12 +5,15 @@
 #include "Phoenix/GameFramework/Health/HealthComponent.h"
 
 #include "Components/ProgressBar.h"
-#include "Components/TextBlock.h"
+#include "Components/RichTextBlock.h"
 #include "Blueprint/WidgetTree.h"
 
 UHealthBar::UHealthBar(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+	HealthBar = nullptr;
+	HealthText = nullptr;
+
 	TrackedHealthComponent = nullptr;
 	bInverselyFill = false;
 }
@@ -61,15 +64,27 @@ void UHealthBar::UpdateHealthBar()
 
 		if (HealthText)
 		{
-			int32 AccumulativeHealth = 0;
+			FText FormatedHealthText = FText::GetEmpty();
 
 			for (const FHealthTypeEntry& Entry : TrackedHealthComponent->GetHealthTypeEntries())
 			{
-				AccumulativeHealth += Entry.Amount;
-			}
+				FFormatNamedArguments Arguments;
+				Arguments.Add(TEXT("CurrentString"), FormatedHealthText);
+				Arguments.Add(TEXT("CurrentHealth"), Entry.Amount);
+				Arguments.Add(TEXT("MaxHealth"), Entry.MaxAmount);
 
-			// TODO: Sequence to account for multiple health pools.
-			HealthText->SetText(FText::FromString(FString::FromInt(AccumulativeHealth)));
+				if (Entry.HealthType->TextColor.IsEmpty())
+				{
+					FormatedHealthText = FText::Format(NSLOCTEXT("TextDisplayNamespace", "HealthFormatText", "{CurrentString} {CurrentHealth}/{MaxHealth}"), Arguments);
+				}
+				else
+				{
+					Arguments.Add(TEXT("Color"), FText::FromString(Entry.HealthType->TextColor));
+					FormatedHealthText = FText::Format(NSLOCTEXT("TextDisplayNamespace", "HealthFormatTextColor", "{CurrentString} <{Color}>{CurrentHealth}/{MaxHealth}</>"), Arguments);
+				}
+			}
+			
+			HealthText->SetText(FormatedHealthText);
 		}
 	}
 }

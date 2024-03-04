@@ -45,7 +45,7 @@ void UHealthComponent::AddHealthTypeEntry(const FHealthTypeEntry& HealthTypeToAd
 	if (!HealthEntrys.Contains(HealthTypeToAdd))
 	{
 		HealthEntrys.AddUnique(HealthTypeToAdd);
-		HealthEntrys.Sort(UHealthComponent::SortHealthTypePriority);
+		HealthEntrys.Sort();
 	}
 }
 
@@ -54,7 +54,7 @@ void UHealthComponent::RemoveHealthTypeEntry(const FHealthTypeEntry& HealthTypeT
 	if (HealthEntrys.Contains(HealthTypeToRemove))
 	{
 		HealthEntrys.Remove(HealthTypeToRemove);
-		HealthEntrys.Sort(UHealthComponent::SortHealthTypePriority);
+		HealthEntrys.Sort();
 	}
 }
 
@@ -73,30 +73,35 @@ float UHealthComponent::GetHealthRemainingAsRatio() const
 
 void UHealthComponent::OnHealthUpdatedEvent(const FModifyHealthInfo& ModifyHealthInfo)
 {
-	auto Result = FHealthChangeResult();
+	FHealthChangeResult Result;
 
-	for (FHealthTypeEntry& Entry : HealthEntrys)
+	for (const FDamageInfo& Damage : ModifyHealthInfo.DamageSources)
 	{
-		// TODO: Need to change the verbage to something more neutral than just damage.
-		for (FDamageInfo Damage : ModifyHealthInfo.DamageSources)
+		Result.DamageSources.Add(Damage);
+
+		for (int32 Index = HealthEntrys.Num() - 1; Index >= 0; --Index)
 		{
-			HealthEntrys[0].Amount -= Damage.ChangeAmount;
+			FHealthTypeEntry& Entry = HealthEntrys[Index];
 
-			Result.DamageSources.Add(Damage);
+			Entry.Amount -= Damage.ChangeAmount;
 
-			if (HealthEntrys[0].Amount <= 0.0f)
+			if (Entry.Amount <= 0.0f)
 			{
-				if (HealthEntrys[0].HealthType->bIsCritical)
+				if (Entry.HealthType->bIsCritical)
 				{
 					OnDeathDelegate.Broadcast(FOnDeathInfo(GetOwner(), ModifyHealthInfo.CausedBy));
 					goto endloop; // I know it is generally frowned upon to use goto, but from my understanding, using it to break out of nested for loops is completely fine.
 				}
 				else
 				{
-					HealthEntrys.Remove(Entry);
-					HealthEntrys.Sort(UHealthComponent::SortHealthTypePriority);
+					HealthEntrys.RemoveSingleSwap(Entry);
 				}
 			}
+		}
+
+		if (HealthEntrys.Num() >= 1)
+		{
+			HealthEntrys.Sort();
 		}
 	}
 

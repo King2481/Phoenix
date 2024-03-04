@@ -129,6 +129,9 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnCharacterMenuSelectedDelegate OnCharacterMenuSelectedDelegate;
 
+	UFUNCTION(BlueprintPure, Category = "Phoenix Player Controller")
+	UPartyManagement* GetPartyManagement() const { return PartyManagement; }
+
 protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Phoenix Player Controller")

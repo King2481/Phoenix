@@ -7,7 +7,7 @@
 #include "HealthBar.generated.h"
 
 class UProgressBar;
-class UTextBlock;
+class URichTextBlock;
 class UHealthComponent;
 struct FHealthChangeInfo;
 
@@ -38,7 +38,7 @@ protected:
 	TObjectPtr<UProgressBar> HealthBar;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Health Bar", meta = (BindWidget))
-	TObjectPtr<UTextBlock> HealthText;
+	TObjectPtr<URichTextBlock> HealthText;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Health Bar")
 	TObjectPtr<UHealthComponent> TrackedHealthComponent;

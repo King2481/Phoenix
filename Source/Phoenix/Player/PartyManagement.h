@@ -8,6 +8,8 @@
 
 class APhoenixCharacter;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPartyChangedDelegate);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PHOENIX_API UPartyManagement : public UActorComponent
 {
@@ -29,6 +31,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Party Management")
 	uint8 GetMaxPartySize() const { return MaxPartySize; }
+
+	UPROPERTY(BlueprintAssignable)
+	FOnPartyChangedDelegate OnPartyChangedDelegate;
 
 protected:
 

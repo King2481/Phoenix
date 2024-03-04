@@ -16,19 +16,26 @@ UPartyManagement::UPartyManagement()
 
 bool UPartyManagement::AddCharacter(APhoenixCharacter* InCharacter)
 {
+	int32 AddedIndex = INDEX_NONE;
+
 	if (!SpawnedPartyMembers.Contains(InCharacter))
 	{
-		return SpawnedPartyMembers.AddUnique(InCharacter) > INDEX_NONE;
+		AddedIndex = SpawnedPartyMembers.AddUnique(InCharacter);
+		OnPartyChangedDelegate.Broadcast();
 	}
 
-	return false;
+	return AddedIndex != INDEX_NONE;
 }
 
 bool UPartyManagement::RemoveCharacter(APhoenixCharacter* CharacterToRemove)
 {
 	if (SpawnedPartyMembers.Contains(CharacterToRemove))
 	{
-		return SpawnedPartyMembers.Remove(CharacterToRemove) > 0;
+		if (SpawnedPartyMembers.Remove(CharacterToRemove) > 0)
+		{
+			OnPartyChangedDelegate.Broadcast();
+			return true;
+		}
 	}
 
 	return false;

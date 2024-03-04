@@ -29,4 +29,8 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Health Type")
 	bool bAbsorbsLeftoverDamageOnDepletion;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Health Type")
+	FString TextColor;
+
 };

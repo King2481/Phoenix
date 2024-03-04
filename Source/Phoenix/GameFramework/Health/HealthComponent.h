@@ -43,6 +43,11 @@ struct FHealthTypeEntry
 	{
 		return HealthType == Other.HealthType;
 	}
+
+	bool operator<(const FHealthTypeEntry& Other) const
+	{
+		return HealthType->Priority > Other.HealthType->Priority;
+	}
 };
 
 USTRUCT(BlueprintType)
@@ -111,10 +116,5 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Health Component")
 	TArray<FHealthTypeEntry> HealthEntrys;
-
-	static bool SortHealthTypePriority(const FHealthTypeEntry& EntryA, const FHealthTypeEntry& EntryB)
-	{
-		return EntryA.HealthType->Priority > EntryB.HealthType->Priority;
-	}
 
 };
