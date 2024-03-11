@@ -7,17 +7,21 @@
 
 UPickpocketAsyncAction::UPickpocketAsyncAction()
 {
+	TargetInventory = nullptr;
+	PocketerInventory = nullptr;
+
 	PickpocketScreenInstance = nullptr;
 	PlayerController = nullptr;
 }
 
-UPickpocketAsyncAction* UPickpocketAsyncAction::DisplayPickpocketScreenAsync(UObject* WorldContextObject, APlayerController* ForPlayer, UInventoryComponent* PickpocketingFromInventory)
+UPickpocketAsyncAction* UPickpocketAsyncAction::DisplayPickpocketScreenAsync(UObject* WorldContextObject, APlayerController* ForPlayer, UInventoryComponent* PickpocketingFromInventory, UInventoryComponent* InPocketerInventory)
 {
 	UPickpocketAsyncAction* Action = NewObject<UPickpocketAsyncAction>();
 	if (Action)
 	{
 		Action->PlayerController = ForPlayer;
-		Action->Inventory = PickpocketingFromInventory;
+		Action->TargetInventory = PickpocketingFromInventory;
+		Action->PocketerInventory = InPocketerInventory;
 	}
 
 	return Action;
@@ -31,7 +35,8 @@ void UPickpocketAsyncAction::Activate()
 	{
 		if (PickpocketScreenInstance = CreateWidget<UPickpocketScreen>(PlayerController, UISettings->DefaultPickpocketScreen.LoadSynchronous()))
 		{
-			PickpocketScreenInstance->InitScreen(Inventory);
+			PickpocketScreenInstance->InitScreen(TargetInventory, PocketerInventory);
+			PickpocketScreenInstance->OnPickpocketResult.AddDynamic(this, &ThisClass::OnPickpocketResult);
 			PickpocketScreenInstance->AddToViewport();
 			PickpocketScreenInstance->ActivateWidget();
 		}
@@ -42,12 +47,19 @@ void UPickpocketAsyncAction::CleanupAction()
 {
 	if (PickpocketScreenInstance)
 	{
-
+		PickpocketScreenInstance->RemoveFromParent();
+		PickpocketScreenInstance->OnPickpocketResult.RemoveDynamic(this, &ThisClass::OnPickpocketResult);
 	}
 
 	PickpocketScreenInstance = nullptr;
 	PlayerController = nullptr;
-	Inventory = nullptr;
+	TargetInventory = nullptr;
+	PocketerInventory = nullptr;
 
 	SetReadyToDestroy();
+}
+
+void UPickpocketAsyncAction::OnPickpocketResult(EPickpocketResult Result)
+{
+	OnResultRecieved.Broadcast(Result);
 }

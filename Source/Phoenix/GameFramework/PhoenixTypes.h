@@ -222,3 +222,11 @@ struct FCameraShakeData
 		ExplosionCameraShakeOuterRadius = 1000.0f;
 	}
 };
+
+UENUM(BlueprintType)
+enum class EPickpocketResult : uint8
+{
+	Success   UMETA(DisplayName = "Success"),
+	Failed    UMETA(DisplayName = "Failed"),
+	Caught    UMETA(DisplayName = "Caught")
+};

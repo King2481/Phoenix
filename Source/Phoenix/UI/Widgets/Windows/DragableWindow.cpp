@@ -5,12 +5,14 @@
 #include "Phoenix/UI/Widgets/Windows/DragWindowWidget.h"
 #include "Phoenix/UI/Widgets/Windows/WindowDragOperation.h"
 #include "Phoenix/Settings/UIDeveloperSettings.h"
+#include "Phoenix/Player/PhoenixPlayerController.h"
 
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
 #include "Kismet/KismetInputLibrary.h"
 #include "Components/CanvasPanel.h"
 #include "Components/SizeBox.h"
+#include "Components/Button.h"
 
 UDragableWindow::UDragableWindow()
 {

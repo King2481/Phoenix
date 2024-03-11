@@ -6,7 +6,7 @@
 #include "Engine/CancellableAsyncAction.h"
 #include "PickpocketAsyncAction.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPickpocketSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPickpocketSignature, EPickpocketResult, Result);
 
 class UPickpocketScreen;
 class UInventoryComponent;
@@ -27,7 +27,7 @@ public:
 	virtual void Activate() override;
 
 	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true", Category = "Pickpocket Async", WorldContext = "WorldContextObject"))
-	static UPickpocketAsyncAction* DisplayPickpocketScreenAsync(UObject* WorldContextObject, APlayerController* ForPlayer, UInventoryComponent* PickpocketingFromInventory);
+	static UPickpocketAsyncAction* DisplayPickpocketScreenAsync(UObject* WorldContextObject, APlayerController* ForPlayer, UInventoryComponent* PickpocketingFromInventory, UInventoryComponent* InPocketerInventory);
 
 protected:
 
@@ -35,13 +35,18 @@ protected:
 	TObjectPtr<UPickpocketScreen> PickpocketScreenInstance;
 
 	UPROPERTY(BlueprintAssignable)
-	FPickpocketSignature OnPickpocketResult;
+	FPickpocketSignature OnResultRecieved;
+
+	UFUNCTION()
+	void OnPickpocketResult(EPickpocketResult Result);
+
+	UFUNCTION(BlueprintCallable, Category = "Pickpocket Async Action")
+	void CleanupAction();
 
 private:
 
-	void CleanupAction();
-
 	TObjectPtr<APlayerController> PlayerController;
-	TObjectPtr<UInventoryComponent> Inventory;
+	TObjectPtr<UInventoryComponent> TargetInventory;
+	TObjectPtr<UInventoryComponent> PocketerInventory;
 	
 };

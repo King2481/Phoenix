@@ -3,6 +3,7 @@
 
 #include "Phoenix/UI/Widgets/Screens/Pickpocket/PickpocketScreen.h"
 #include "Phoenix/UI/Widgets/Items/ItemDisplayPanel.h"
+#include "Phoenix/UI/Widgets/Items/ItemEntryObject.h"
 #include "Phoenix/GameFramework/PhoenixGameplayStatics.h"
 #include "Phoenix/Player/PhoenixPlayerController.h"
 #include "Phoenix/Items/ItemDataBase.h"
@@ -20,11 +21,13 @@ UPickpocketScreen::UPickpocketScreen()
 	StealButton = nullptr;
 	CloseButton = nullptr;
 	PickpocketDCText = nullptr;
+	CaughtSaveDCText = nullptr;
 	PickpocketRolledText = nullptr;
 	ItemDisplayPanel = nullptr;
 
 	SelectedItem = nullptr;
-	Inventory = nullptr;
+	TargetInventory = nullptr;
+	PocketerInventory = nullptr;
 }
 
 void UPickpocketScreen::NativeConstruct()
@@ -69,13 +72,14 @@ void UPickpocketScreen::NativeOnDeactivated()
 	}
 }
 
-void UPickpocketScreen::InitScreen(UInventoryComponent* InInventory)
+void UPickpocketScreen::InitScreen(UInventoryComponent* InTargetInventory, UInventoryComponent* InPocketerInventory)
 {
-	Inventory = InInventory;
+	TargetInventory = InTargetInventory;
+	PocketerInventory = InPocketerInventory;
 
 	if (ItemDisplayPanel)
 	{
-		for (const FInventoryItem& Item : Inventory->GetInventoryItems())
+		for (const FInventoryItem& Item : TargetInventory->GetInventoryItems())
 		{
 			if (Item.Item->bPickpocketable)
 			{
@@ -89,23 +93,41 @@ void UPickpocketScreen::OnStealButtonPressed()
 {
 	if (SelectedItem)
 	{
-		const FDiceRollToBeatResult Result = UPhoenixGameplayStatics::RollDiceToBeat({ FDiceRollInfo(EDiceType::D20) }, SelectedItem->PickpocketDifficultyClass);
+		const UItemDataBase* Item = SelectedItem->StoredItem.Item;
+		const FDiceRollToBeatResult Result = UPhoenixGameplayStatics::RollDiceToBeat({ FDiceRollInfo(EDiceType::D20) }, Item->PickpocketDifficultyClass);
 	
+		EPickpocketResult PickpocketResult = EPickpocketResult::Success;
+
 		if (Result.bSuccessfullyPassed)
 		{
-			// Passed
+			PickpocketRolledText->SetText(FText::FromString(FString::FromInt(Result.AmountRolled)));
+		
+			if (PocketerInventory->TransferItemBetweenInventories(SelectedItem->StoredItem, TargetInventory))
+			{
+				ItemDisplayPanel->RemoveItemSingle(SelectedItem);
+			}
 		}
 		else
 		{
-			if (UPhoenixGameplayStatics::RollDiceToBeat({ FDiceRollInfo(EDiceType::D20) }, SelectedItem->PickpocketCaughtSaveDifficultyClass).bSuccessfullyPassed)
+			const FDiceRollToBeatResult Save = UPhoenixGameplayStatics::RollDiceToBeat({ FDiceRollInfo(EDiceType::D20) }, Item->PickpocketCaughtSaveDifficultyClass);
+			
+			// TODO: This is probably going to have to be a seperate text block as it does look confusing from a UI perspective why you could roll higher than
+			// the pickpocket check but still "fail". But for MVP/Prototyping purposes, this is fine.
+
+			PickpocketRolledText->SetText(FText::FromString(FString::FromInt(Save.AmountRolled)));
+
+			if (Save.bSuccessfullyPassed)
 			{
-				// Failed
+				PickpocketResult = EPickpocketResult::Failed;
 			}
 			else
 			{
-				// Caught
+				PickpocketResult = EPickpocketResult::Caught;
 			}
 		}
+
+		BlueprintPickpocketResult(PickpocketResult);
+		OnPickpocketResult.Broadcast(PickpocketResult);
 	}
 }
 
@@ -114,17 +136,23 @@ void UPickpocketScreen::OnCloseButtonPressed()
 	DeactivateWidget();
 }
 
-void UPickpocketScreen::UpdateSelectedItem(UItemDataBase* NewSelectedItem)
+void UPickpocketScreen::UpdateSelectedItem(UItemEntryObject* NewSelectedItem)
 {
 	SelectedItem = NewSelectedItem;
 
 	if (SelectedItem)
 	{
-		PickpocketDCText->SetText(FText::FromString(FString::FromInt(SelectedItem->PickpocketDifficultyClass)));
+		const UItemDataBase* Item = SelectedItem->StoredItem.Item;
+
+		PickpocketDCText->SetText(FText::FromString(FString::FromInt(Item->PickpocketDifficultyClass)));
 		PickpocketDCText->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+
+		CaughtSaveDCText->SetText(FText::FromString(FString::FromInt(Item->PickpocketCaughtSaveDifficultyClass)));
+		CaughtSaveDCText->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	}
 	else
 	{
 		PickpocketDCText->SetVisibility(ESlateVisibility::Hidden);
+		CaughtSaveDCText->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
