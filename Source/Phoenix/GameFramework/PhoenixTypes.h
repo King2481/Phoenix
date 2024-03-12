@@ -151,6 +151,9 @@ struct FProjectileProperties
 	UPROPERTY(BlueprintReadOnly)
 	int32 CritDie;
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	float ImpactForce;
+
 	FProjectileProperties()
 	{
 		ProjectileSpeed = 4500.0f;
@@ -160,6 +163,7 @@ struct FProjectileProperties
 		MaxBounces = 1;
 		GravityScale = 0.0f;
 		CritDie = 20;
+		ImpactForce = 2500.0f;
 	}
 };
 

@@ -5,6 +5,7 @@
 #include "Phoenix/Abilities/PhoenixAbilitySystemComponent.h"
 #include "Phoenix/GameFramework/Damage/DamageCalculationType.h"
 #include "Phoenix/FX/SurfaceReactionComponent.h"
+#include "Phoenix/GameFramework/Explosions/Launchable.h"
 
 #include "Components/SphereComponent.h"
 
@@ -59,6 +60,22 @@ void AImpactProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		}
 
 		ABS->ModifyHealth(Info);
+	}
+
+	if (const auto Launchable = Cast<ILaunchable>(Hit.GetActor()))
+	{
+		if (ILaunchable::Execute_CanLaunch(Hit.GetActor()))
+		{
+			if (UPrimitiveComponent* Comp = ILaunchable::Execute_GetPrimitiveComponentForLaunch(Hit.GetActor()))
+			{
+				const float LaunchStrength = 2500.0f;
+
+				if (Hit.BoneName != NAME_None)
+				{
+					Comp->AddImpulse(-Hit.Normal * LaunchStrength, Hit.BoneName);
+				}
+			}
+		}
 	}
 
 	SurfaceReactionComponent->PlaySurfaceReactionFromHitResult(Hit);

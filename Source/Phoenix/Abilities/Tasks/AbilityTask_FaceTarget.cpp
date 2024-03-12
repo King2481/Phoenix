@@ -39,6 +39,13 @@ void UAbilityTask_FaceTarget::TickTask(float DeltaTime)
 {
 	Super::TickTask(DeltaTime);
 
+	if (TargetActor == nullptr)
+	{
+		OnRequestFinished.Broadcast();
+		EndTask();
+		return;
+	}
+
 	const FVector DirectionToTarget = (TargetActor->GetActorLocation() - GetAvatarActor()->GetActorLocation()).GetSafeNormal();
 	const FVector HorizontalDirection = FVector(DirectionToTarget.X, DirectionToTarget.Y, 0.0f);
 	const float TargetYaw = FMath::Atan2(HorizontalDirection.Y, HorizontalDirection.X) * 180.0f / PI;

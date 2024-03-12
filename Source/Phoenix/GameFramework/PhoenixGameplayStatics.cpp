@@ -4,6 +4,7 @@
 #include "Phoenix/GameFramework/PhoenixGameplayStatics.h"
 #include "Phoenix/GameFramework/Damage/DamageCalculationType.h"
 #include "Phoenix/GameFramework/Explosions/ExplosionData.h"
+#include "Phoenix/GameFramework/Explosions/Launchable.h"
 #include "Phoenix/Weapons/Projectiles/ProjectileBase.h"
 #include "Phoenix/Engine/GameTraceChannels.h"
 #include "Phoenix/Abilities/PhoenixAbilitySystemComponent.h"
@@ -80,40 +81,61 @@ void UPhoenixGameplayStatics::Explode(const UObject* WorldContextObject, AActor*
 	{
 		if (UWorld* World = WorldContextObject->GetWorld())
 		{
-			if (const auto ABS = ExplodingActor->FindComponentByClass<UPhoenixAbilitySystemComponent>())
+			TArray<FHitResult> Hits;
+
+			FCollisionQueryParams Params;
+			Params.AddIgnoredActor(ExplodingActor);
+			Params.bTraceComplex = false;
+
+			const auto ExploderABS = ExplodingActor->FindComponentByClass<UPhoenixAbilitySystemComponent>();
+
+			if (World->SweepMultiByChannel(Hits, Location, Location + FVector(1.0f), FQuat::Identity, ECC_Explosion, FCollisionShape::MakeSphere(ExplosionData->ExplosionOuterRadius), Params))
 			{
-				TArray<FHitResult> Hits;
-
-				FCollisionQueryParams Params;
-				Params.AddIgnoredActor(ExplodingActor);
-				Params.bTraceComplex = false;
-
-				if (World->SweepMultiByChannel(Hits, Location, Location + FVector(1.0f), FQuat::Identity, ECC_Explosion, FCollisionShape::MakeSphere(ExplosionData->ExplosionOuterRadius), Params))
+				for (const auto& Hit : Hits)
 				{
-					for (const auto& Hit : Hits)
+					if (const auto TargetABS = Hit.GetActor()->FindComponentByClass<UPhoenixAbilitySystemComponent>())
 					{
-						if (const auto TargetABS = Hit.GetActor()->FindComponentByClass<UPhoenixAbilitySystemComponent>())
+						const float Distance = (Hit.ImpactPoint - Location).Size();
+						const float Alpha = (Distance - ExplosionData->ExplosionInnerRadius) / (ExplosionData->ExplosionOuterRadius - ExplosionData->ExplosionInnerRadius);
+						const float DamageFalloff = ExplosionData->DamageFalloffCurve.GetRichCurveConst()->Eval(Alpha);
+						const int32 Damage = FMath::Lerp<int32>(ExplosionData->ExplosionInnerDamage, ExplosionData->ExplosionOuterDamage, DamageFalloff);
+
+						FModifyHealthInfo Info;
+						Info.AddDamageSource(FDamageInfo(Damage, ExplosionData->ExplosionDamageTypeClass, Hit.ImpactPoint, false));
+						Info.CausedBy = ExploderABS;
+
+						TargetABS->ModifyHealth(Info);
+					}
+
+					if (const auto Launchable = Cast<ILaunchable>(Hit.GetActor()))
+					{
+						if (ILaunchable::Execute_CanLaunch(Hit.GetActor()))
 						{
-							const float Distance = (Hit.ImpactPoint - Location).Size();
-							const float Alpha = (Distance - ExplosionData->ExplosionInnerRadius) / (ExplosionData->ExplosionOuterRadius - ExplosionData->ExplosionInnerRadius);
-							const float DamageFalloff = ExplosionData->DamageFalloffCurve.GetRichCurveConst()->Eval(Alpha);
-							const int32 Damage = FMath::Lerp<int32>(ExplosionData->ExplosionInnerDamage, ExplosionData->ExplosionOuterDamage, DamageFalloff);
+							if (UPrimitiveComponent* Comp = ILaunchable::Execute_GetPrimitiveComponentForLaunch(Hit.GetActor()))
+							{
+								const float Distance = (Hit.ImpactPoint - Location).Size();
+								const float Alpha = (Distance - ExplosionData->ExplosionInnerForceImpulseRadius) / (ExplosionData->ExplosionOuterForceImpulseRadius - ExplosionData->ExplosionInnerForceImpulseRadius);
+								const float Falloff = ExplosionData->ImpulseFalloffCurve.GetRichCurveConst()->Eval(Alpha);
+								const float LaunchStrength = FMath::Lerp<float>(ExplosionData->ExplosionInnerForceImpulseStrength, ExplosionData->ExplosionOuterForceImpulseStrength, Falloff);
 
-							FModifyHealthInfo Info;
-							Info.AddDamageSource(FDamageInfo(Damage, ExplosionData->ExplosionDamageTypeClass, Hit.ImpactPoint, false));
-							Info.CausedBy = ABS;
-
-							TargetABS->ModifyHealth(Info);
+								Comp->AddImpulse(-Hit.Normal * LaunchStrength, Hit.BoneName);
+							}
 						}
+					}
 
 #if !UE_BUILD_SHIPPING
-						if (CvarDebugExplosion.GetValueOnGameThread() > 0)
-						{
-							UKismetSystemLibrary::DrawDebugSphere(WorldContextObject, Hit.ImpactPoint, 50.0f, 12, FColor::Blue, 5.0f, 1.0f);
-						}
-#endif
+					if (CvarDebugExplosion.GetValueOnGameThread() > 0)
+					{
+						UKismetSystemLibrary::DrawDebugSphere(WorldContextObject, Hit.ImpactPoint, 50.0f, 12, FColor::Blue, 5.0f, 1.0f);
 					}
+#endif
 				}
+			}
+
+			if (CvarDebugExplosion.GetValueOnGameThread() > 1)
+			{
+				UKismetSystemLibrary::DrawDebugSphere(WorldContextObject, Location, ExplosionData->ExplosionInnerForceImpulseRadius, 12, FColor::Green, 5.0f, 1.0f);
+				UKismetSystemLibrary::DrawDebugSphere(WorldContextObject, Location, ExplosionData->ExplosionOuterForceImpulseRadius, 12, FColor::Purple, 5.0f, 1.0f);
 			}
 		}
 	}

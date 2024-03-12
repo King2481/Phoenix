@@ -60,5 +60,23 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Explosion Data")
 	TObjectPtr<UNiagaraSystem> ExplosionFX;
 
+	//////////////////////////////////////////////////////////////////
+	// Physics
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Explosion Data")
+	float ExplosionInnerForceImpulseStrength;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Explosion Data")
+	float ExplosionOuterForceImpulseStrength;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Explosion Data")
+	float ExplosionInnerForceImpulseRadius;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Explosion Data")
+	float ExplosionOuterForceImpulseRadius;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Explosion Data")
+	FRuntimeFloatCurve ImpulseFalloffCurve;
+
 	
 };

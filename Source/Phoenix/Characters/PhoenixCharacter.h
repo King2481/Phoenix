@@ -7,6 +7,7 @@
 #include "Phoenix/GameFramework/PhoenixTypes.h"
 #include "Phoenix/GameFramework/Targeting/Targetable.h"
 #include "Phoenix/Characters/Equipable.h"
+#include "Phoenix/GameFramework/Explosions/Launchable.h"
 #include "PhoenixCharacter.generated.h"
 
 class UInventoryComponent;
@@ -19,7 +20,7 @@ class UReputationComponent;
 class UCombatFloatyNotification;
 
 UCLASS()
-class PHOENIX_API APhoenixCharacter : public ACharacter, public ITargetable, public IEquipable
+class PHOENIX_API APhoenixCharacter : public ACharacter, public ITargetable, public IEquipable, public ILaunchable
 {
 	GENERATED_BODY()
 
@@ -68,14 +69,24 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Phoenix Character")
 	void BlueprintOnDeath();
 
-public:	
+public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	void OnSneakActivated();
 
+	// ITargetable
 	virtual FTargetableInfo GetTargetInfo_Implementation() const override;
+	// EndITargetable
 
+	// IEquipable
 	virtual USkeletalMeshComponent* GetEquipableAttachMesh_Implementation() const override { return GetMesh(); }
+	// EndIEquipable
+
+	// ILaunchable
+	virtual UPrimitiveComponent* GetPrimitiveComponentForLaunch_Implementation() const override { return GetMesh(); }
+	virtual bool CanLaunch_Implementation() const override { return GetMesh()->IsSimulatingPhysics(); };
+	// End ILaunchable
+
 };
