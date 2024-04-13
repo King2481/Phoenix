@@ -14,8 +14,15 @@ UExplosionComponent::UExplosionComponent()
 	DefaultExplosionData = nullptr;
 }
 
-void UExplosionComponent::Explode(UExplosionData* ExplosionOverride /*= nullptr */)
+void UExplosionComponent::Explode(APawn* Instigator /*= nullptr*/, UExplosionData* ExplosionOverride /*= nullptr */)
 {
 	const auto ChosenData = ExplosionOverride != nullptr ? ExplosionOverride : DefaultExplosionData;
-	UPhoenixGameplayStatics::Explode(this, GetOwner(), GetComponentLocation(), ChosenData);
+
+	FExplosionInfo Info;
+	Info.ExplodingActor = GetOwner();
+	Info.Location = GetComponentLocation();
+	Info.ExplosionData = ChosenData;
+	Info.Instigator = Instigator;
+
+	UPhoenixGameplayStatics::Explode(this, Info);
 }

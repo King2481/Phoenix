@@ -75,7 +75,7 @@ AProjectileBase* UPhoenixGameplayStatics::SpawnProjectile(const UObject* WorldCo
 	return nullptr;
 }
 
-void UPhoenixGameplayStatics::Explode(const UObject* WorldContextObject, AActor* ExplodingActor, const FVector& Location, UExplosionData* ExplosionData)
+void UPhoenixGameplayStatics::Explode(const UObject* WorldContextObject, const FExplosionInfo& ExplosionInfo)
 {
 	// Damage
 	{
@@ -84,24 +84,24 @@ void UPhoenixGameplayStatics::Explode(const UObject* WorldContextObject, AActor*
 			TArray<FHitResult> Hits;
 
 			FCollisionQueryParams Params;
-			Params.AddIgnoredActor(ExplodingActor);
+			Params.AddIgnoredActor(ExplosionInfo.ExplodingActor);
 			Params.bTraceComplex = false;
 
-			const auto ExploderABS = ExplodingActor->FindComponentByClass<UPhoenixAbilitySystemComponent>();
+			const auto ExploderABS = ExplosionInfo.ExplodingActor->FindComponentByClass<UPhoenixAbilitySystemComponent>();
 
-			if (World->SweepMultiByChannel(Hits, Location, Location + FVector(1.0f), FQuat::Identity, ECC_Explosion, FCollisionShape::MakeSphere(ExplosionData->ExplosionOuterRadius), Params))
+			if (World->SweepMultiByChannel(Hits, ExplosionInfo.Location, ExplosionInfo.Location, FQuat::Identity, ECC_Explosion, FCollisionShape::MakeSphere(ExplosionInfo.ExplosionData->ExplosionOuterRadius), Params))
 			{
 				for (const auto& Hit : Hits)
 				{
 					if (const auto TargetABS = Hit.GetActor()->FindComponentByClass<UPhoenixAbilitySystemComponent>())
 					{
-						const float Distance = (Hit.ImpactPoint - Location).Size();
-						const float Alpha = (Distance - ExplosionData->ExplosionInnerRadius) / (ExplosionData->ExplosionOuterRadius - ExplosionData->ExplosionInnerRadius);
-						const float DamageFalloff = ExplosionData->DamageFalloffCurve.GetRichCurveConst()->Eval(Alpha);
-						const int32 Damage = FMath::Lerp<int32>(ExplosionData->ExplosionInnerDamage, ExplosionData->ExplosionOuterDamage, DamageFalloff);
+						const float Distance = (Hit.ImpactPoint - ExplosionInfo.Location).Size();
+						const float Alpha = (Distance - ExplosionInfo.ExplosionData->ExplosionInnerRadius) / (ExplosionInfo.ExplosionData->ExplosionOuterRadius - ExplosionInfo.ExplosionData->ExplosionInnerRadius);
+						const float DamageFalloff = ExplosionInfo.ExplosionData->DamageFalloffCurve.GetRichCurveConst()->Eval(Alpha);
+						const int32 Damage = FMath::Lerp<int32>(ExplosionInfo.ExplosionData->ExplosionInnerDamage, ExplosionInfo.ExplosionData->ExplosionOuterDamage, DamageFalloff);
 
 						FModifyHealthInfo Info;
-						Info.AddDamageSource(FDamageInfo(Damage, ExplosionData->ExplosionDamageTypeClass, Hit.ImpactPoint, false));
+						Info.AddDamageSource(FDamageInfo(Damage, ExplosionInfo.ExplosionData->ExplosionDamageTypeClass, Hit.ImpactPoint, false));
 						Info.CausedBy = ExploderABS;
 
 						TargetABS->ModifyHealth(Info);
@@ -113,10 +113,10 @@ void UPhoenixGameplayStatics::Explode(const UObject* WorldContextObject, AActor*
 						{
 							if (UPrimitiveComponent* Comp = ILaunchable::Execute_GetPrimitiveComponentForLaunch(Hit.GetActor()))
 							{
-								const float Distance = (Hit.ImpactPoint - Location).Size();
-								const float Alpha = (Distance - ExplosionData->ExplosionInnerForceImpulseRadius) / (ExplosionData->ExplosionOuterForceImpulseRadius - ExplosionData->ExplosionInnerForceImpulseRadius);
-								const float Falloff = ExplosionData->ImpulseFalloffCurve.GetRichCurveConst()->Eval(Alpha);
-								const float LaunchStrength = FMath::Lerp<float>(ExplosionData->ExplosionInnerForceImpulseStrength, ExplosionData->ExplosionOuterForceImpulseStrength, Falloff);
+								const float Distance = (Hit.ImpactPoint - ExplosionInfo.Location).Size();
+								const float Alpha = (Distance - ExplosionInfo.ExplosionData->ExplosionInnerForceImpulseRadius) / (ExplosionInfo.ExplosionData->ExplosionOuterForceImpulseRadius - ExplosionInfo.ExplosionData->ExplosionInnerForceImpulseRadius);
+								const float Falloff = ExplosionInfo.ExplosionData->ImpulseFalloffCurve.GetRichCurveConst()->Eval(Alpha);
+								const float LaunchStrength = FMath::Lerp<float>(ExplosionInfo.ExplosionData->ExplosionInnerForceImpulseStrength, ExplosionInfo.ExplosionData->ExplosionOuterForceImpulseStrength, Falloff);
 
 								Comp->AddImpulse(-Hit.Normal * LaunchStrength, Hit.BoneName);
 							}
@@ -134,38 +134,45 @@ void UPhoenixGameplayStatics::Explode(const UObject* WorldContextObject, AActor*
 
 			if (CvarDebugExplosion.GetValueOnGameThread() > 1)
 			{
-				UKismetSystemLibrary::DrawDebugSphere(WorldContextObject, Location, ExplosionData->ExplosionInnerForceImpulseRadius, 12, FColor::Green, 5.0f, 1.0f);
-				UKismetSystemLibrary::DrawDebugSphere(WorldContextObject, Location, ExplosionData->ExplosionOuterForceImpulseRadius, 12, FColor::Purple, 5.0f, 1.0f);
+				UKismetSystemLibrary::DrawDebugSphere(WorldContextObject, ExplosionInfo.Location, ExplosionInfo.ExplosionData->ExplosionInnerForceImpulseRadius, 12, FColor::Green, 5.0f, 1.0f);
+				UKismetSystemLibrary::DrawDebugSphere(WorldContextObject, ExplosionInfo.Location, ExplosionInfo.ExplosionData->ExplosionOuterForceImpulseRadius, 12, FColor::Purple, 5.0f, 1.0f);
 			}
 		}
 	}
 
 	// FX
 	{
-		if (ExplosionData->ExplosionSound)
+		if (ExplosionInfo.ExplosionData->ExplosionSound)
 		{
-			UGameplayStatics::PlaySoundAtLocation(WorldContextObject, ExplosionData->ExplosionSound, Location);
+			UGameplayStatics::PlaySoundAtLocation(WorldContextObject, ExplosionInfo.ExplosionData->ExplosionSound, ExplosionInfo.Location);
 		}
 
-		if (ExplosionData->ExplosionFX)
+		if (ExplosionInfo.ExplosionData->ExplosionFX)
 		{
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(WorldContextObject, ExplosionData->ExplosionFX, Location);
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(WorldContextObject, ExplosionInfo.ExplosionData->ExplosionFX, ExplosionInfo.Location);
 		}
 
-		if (ExplosionData->CameraShakeData.ExplosionCameraShakeClass)
+		if (ExplosionInfo.ExplosionData->CameraShakeData.ExplosionCameraShakeClass)
 		{
 			UGameplayStatics::PlayWorldCameraShake(WorldContextObject, 
-				ExplosionData->CameraShakeData.ExplosionCameraShakeClass, 
-				Location, ExplosionData->CameraShakeData.ExplosionCameraShakeInnerRadius, 
-				ExplosionData->CameraShakeData.ExplosionCameraShakeOuterRadius, 1.0f, true);
+				ExplosionInfo.ExplosionData->CameraShakeData.ExplosionCameraShakeClass,
+				ExplosionInfo.Location, ExplosionInfo.ExplosionData->CameraShakeData.ExplosionCameraShakeInnerRadius,
+				ExplosionInfo.ExplosionData->CameraShakeData.ExplosionCameraShakeOuterRadius, 1.0f, true);
 		}
+	}
+
+	// AI
+	{
+		// Note: So in order for a pawn to "hear" an explosion, the instigator can NOT be nullptr, if this were a commercial project,
+		// I'd probably want to look into doing an engine modification so it allows pawns to hear things from unknown sources.
+		ExplosionInfo.ExplodingActor->MakeNoise(1.0f, ExplosionInfo.Instigator, ExplosionInfo.Location, 0.0f, FName("Explosion"));
 	}
 
 #if !UE_BUILD_SHIPPING
 	if (CvarDebugExplosion.GetValueOnGameThread() > 0)
 	{
-		UKismetSystemLibrary::DrawDebugSphere(WorldContextObject, Location, ExplosionData->ExplosionInnerRadius, 12, FColor::Red, 5.0f, 1.0f);
-		UKismetSystemLibrary::DrawDebugSphere(WorldContextObject, Location, ExplosionData->ExplosionOuterRadius, 12, FColor::Yellow, 5.0f, 1.0f);
+		UKismetSystemLibrary::DrawDebugSphere(WorldContextObject, ExplosionInfo.Location, ExplosionInfo.ExplosionData->ExplosionInnerRadius, 12, FColor::Red, 5.0f, 1.0f);
+		UKismetSystemLibrary::DrawDebugSphere(WorldContextObject, ExplosionInfo.Location, ExplosionInfo.ExplosionData->ExplosionOuterRadius, 12, FColor::Yellow, 5.0f, 1.0f);
 	}
 #endif
 }

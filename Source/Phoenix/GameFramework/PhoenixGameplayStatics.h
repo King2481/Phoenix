@@ -57,6 +57,32 @@ struct FDiceRollToBeatResult
 	}
 };
 
+USTRUCT(BlueprintType)
+struct FExplosionInfo
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<AActor> ExplodingActor;
+
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<APawn> Instigator;
+
+	UPROPERTY(BlueprintReadOnly)
+	FVector Location;
+
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UExplosionData> ExplosionData;
+
+	FExplosionInfo()
+	{
+		ExplodingActor = nullptr;
+		Instigator = nullptr;
+		Location = FVector::ZeroVector;
+		ExplosionData = nullptr;
+	}
+};
+
 /**
  * 
  */
@@ -80,6 +106,6 @@ public:
 	static AProjectileBase* SpawnProjectile(const UObject* WorldContextObject, const FProjectileSpawnInfo& SpawnInfo);
 
 	UFUNCTION(BlueprintCallable, meta = (WorldContext = "WorldContextObject"), Category = "Phoenix Gameplay Statics")
-	static void Explode(const UObject* WorldContextObject, AActor* ExplodingActor, const FVector& Location, UExplosionData* ExplosionData);
+	static void Explode(const UObject* WorldContextObject, const FExplosionInfo& ExplosionInfo);
 
 };

@@ -19,7 +19,7 @@ public:
 	UExplosionComponent();
 
 	UFUNCTION(BlueprintCallable, Category = "Explosion Component")
-	void Explode(UExplosionData* ExplosionOverride = nullptr);
+	void Explode(APawn* Instigator = nullptr, UExplosionData* ExplosionOverride = nullptr);
 
 protected:
 
